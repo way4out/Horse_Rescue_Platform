@@ -187,20 +187,4 @@ window.addEventListener("load",()=>setTimeout(()=>{
  refreshOps();
  sb.channel("rescue-ops-all").on("postgres_changes",{event:"*",schema:"public",table:"horses"},refreshOps).on("postgres_changes",{event:"*",schema:"public",table:"care_events"},refreshOps).on("postgres_changes",{event:"*",schema:"public",table:"tasks"},refreshOps).subscribe();
 },1500));
-</script><script id="endpoint-hardening">
-window.addEventListener("load",()=>{
- const p=document.getElementById("prototypeTools");
- if(p){p.querySelectorAll("h3").forEach(h=>{if(h.textContent.includes("Local demo")){h.insertAdjacentHTML("afterend",'<p style="color:#aebdb2;font-size:.85rem">This is only a browser demo. It is not the live rescue database.</p>')}})}
- const f=document.getElementById("interestForm");
- if(f)f.addEventListener("submit",async ev=>{
-   if(!window.rescueDB)return;
-   ev.preventDefault();
-   const btn=f.querySelector("button[type=submit]");btn.disabled=true;btn.textContent="Sending…";
-   const payload={name:document.getElementById("name").value.trim(),email:document.getElementById("email").value.trim(),phone:document.getElementById("phone").value.trim()||null,request_type:document.getElementById("interest").value,message:document.getElementById("message").value.trim()||null};
-   const {error}=await window.rescueDB.from("help_requests").insert(payload);
-   btn.disabled=false;btn.textContent="Send Request";
-   if(error){toast("We couldn't submit the request right now. Please try again.");console.warn(error);return}
-   f.reset();document.getElementById("contactNotice").hidden=false;toast("Request sent to the rescue intake system.");
- });
-});
 </script></body></html>
