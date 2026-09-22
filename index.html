@@ -43,6 +43,7 @@ footer{background:#09150f;color:#b7c5ba;padding:42px 0}.mobile{display:none}.mod
 <footer><div class="wrap"><strong>HORSE RESCUE</strong><p>Every horse deserves a future — adoption, rehabilitation, foster care, sponsorship or lifelong sanctuary.</p><small>Williams, Arizona · Web-first rescue platform · Built for field use.</small></div></footer>
 <nav class="mobile"><a href="#top">Home</a><a href="#horses">Horses</a><a href="#help">Help</a><a href="#contact">Contact</a><a href="#operations">Ops</a></nav>
 <div class="toast" id="toast" role="status"></div><div class="modal" id="horseModal" aria-hidden="true"><div class="modalBox"><div class="modalHead"><div><div class="kicker">Horse record</div><h2 id="modalTitle"></h2></div><button class="x" id="closeModal" aria-label="Close">×</button></div><div id="modalBody"></div></div></div>
+<script src="supabase-config.js"></script>
 <script>
 const KEY="horseRescuePlatform_v3";
 const DEMO=[
@@ -90,4 +91,20 @@ window.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("horseModal").class
 if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 render();
 </script>
-</body></html>
+
+<script>
+(function(){
+  if(!window.SUPABASE_CONFIG?.url||!window.SUPABASE_CONFIG?.publishableKey)return;
+  const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";s.onload=()=>window.initSupabaseRescue?.();document.head.appendChild(s);
+})();
+window.initSupabaseRescue=function(){
+  if(!window.supabase?.createClient)return;
+  const client=window.supabase.createClient(window.SUPABASE_CONFIG.url,window.SUPABASE_CONFIG.publishableKey);
+  window.rescueSupabase=client;
+  client.from("horses").select("id,name,status,priority,breed,age_years,public_profile,notes").eq("public_profile",true).order("created_at",{ascending:false}).then(({data,error})=>{
+    if(error||!data)return;
+    const mapped=data.map(h=>({id:h.id,name:h.name,tier:["urgent","evaluation","adoptable","sanctuary"].includes(h.status)?h.status:"evaluation",breed:h.breed||"Unknown",age:h.age_years==null?"Unknown":String(h.age_years),notes:h.notes||"",demo:false}));
+    if(mapped.length){data.horses=mapped;window.localStorage.setItem(KEY,JSON.stringify(data));render();}
+  });
+};
+</script></body></html>
