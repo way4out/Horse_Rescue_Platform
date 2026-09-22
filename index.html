@@ -187,4 +187,14 @@ window.addEventListener("load",()=>setTimeout(()=>{
  refreshOps();
  sb.channel("rescue-ops-all").on("postgres_changes",{event:"*",schema:"public",table:"horses"},refreshOps).on("postgres_changes",{event:"*",schema:"public",table:"care_events"},refreshOps).on("postgres_changes",{event:"*",schema:"public",table:"tasks"},refreshOps).subscribe();
 },1500));
+</script><script id="founder-access">
+window.addEventListener("load",()=>{
+ const params=new URLSearchParams(location.search), token=params.get("invite");
+ if(!token||!window.rescueDB)return;
+ const mount=document.createElement("div");mount.id="founderGate";mount.style.cssText="position:fixed;inset:0;background:rgba(5,15,10,.96);z-index:9999;display:grid;place-items:center;padding:20px";
+ mount.innerHTML='<div style="max-width:520px;width:100%;background:#10251b;color:#fff;padding:28px;border-radius:20px;box-shadow:0 20px 80px #0008"><div style="font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#9fc7a9">Founder access</div><h2 style="margin:.4rem 0">Activate your rescue role</h2><p style="color:#cbd8ce">Create or sign into your Supabase account, then activate this one-time invitation.</p><form id="founderForm"><input id="fgEmail" type="email" placeholder="Email" required style="width:100%;padding:13px;margin:6px 0"><input id="fgPassword" type="password" placeholder="Password (8+ characters)" minlength="8" required style="width:100%;padding:13px;margin:6px 0"><input id="fgName" placeholder="Your name" style="width:100%;padding:13px;margin:6px 0"><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn light" type="submit">Create / activate account</button><button class="btn" type="button" id="fgClose">Enter public site</button></div><p id="fgMsg" style="color:#cbd8ce"></p></form></div>';
+ document.body.appendChild(mount);
+ document.getElementById("fgClose").onclick=()=>mount.remove();
+ document.getElementById("founderForm").onsubmit=async e=>{e.preventDefault();const email=fgEmail.value.trim(),password=fgPassword.value,name=fgName.value.trim();fgMsg.textContent="Creating/signing in…";let r=await window.rescueDB.auth.signUp({email,password});if(r.error&&/already registered/i.test(r.error.message))r=await window.rescueDB.auth.signInWithPassword({email,password});if(r.error){fgMsg.textContent=r.error.message;return}const rr=await window.rescueDB.rpc("redeem_founder_invite",{p_token:token});if(rr.error){fgMsg.textContent=rr.error.message;return}fgMsg.textContent="Role activated. Redirecting to the staff workspace…";setTimeout(()=>{history.replaceState({},document.title,location.pathname);mount.remove();document.getElementById("operations")?.scrollIntoView({behavior:"smooth"})},700)};
+});
 </script></body></html>
