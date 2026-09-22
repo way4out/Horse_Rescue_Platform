@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://way4out.github.io/Horse_Rescue_Platform/sitemap.xml
