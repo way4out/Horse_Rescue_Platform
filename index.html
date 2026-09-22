@@ -6,7 +6,7 @@
 <meta name="robots" content="index,follow"><meta name="application-name" content="Ranch Land Animal Rescue">
 <meta property="og:title" content="Ranch Land Animal Rescue — Every Horse Deserves a Future">
 <meta property="og:description" content="A horse-first rescue platform for emergency intake, care, rehabilitation, fostering, adoption and sanctuary.">
-<meta property="og:type" content="website"><meta property="og:url" content="https://way4out.github.io/Horse_Rescue_Platform/">
+<meta property="og:type" content="website"><meta property="og:url" content="https://way4out.github.io/Ranch-Land-Animal-Rescue/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon.svg">
 <title>Ranch Land Animal Rescue | Rescue Command Center</title>
@@ -172,6 +172,8 @@ window.addEventListener("load",()=>setTimeout(()=>{
  </div>
  <div style="margin-top:18px"><h4>Live task board</h4><form id="dbTaskForm" style="display:flex;gap:8px;flex-wrap:wrap"><input id="dbTaskTitle" required placeholder="Task" style="flex:1;min-width:180px"><select id="dbTaskPriority"><option>critical</option><option>high</option><option>normal</option><option>low</option></select><button class="btn light">Add task</button></form><div id="dbTasks" class="list"></div></div>
  <div style="margin-top:18px"><h4>Horse registry</h4><div style="overflow:auto"><table class="liveTable"><thead><tr><th>Name</th><th>Status</th><th>Priority</th><th>Location</th><th>Actions</th></tr></thead><tbody id="dbHorseRows"></tbody></table></div></div>`;
+ const sb=window.rescueDB;
+ const q=sel=>panel.querySelector(sel), esc2=v=>String(v??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
  const animalBox=document.createElement("div"); animalBox.className="liveOpsPanel"; animalBox.innerHTML=`
 <h4>Universal animal intake</h4>
 <form id="dbAnimalForm"><div class="fields">
@@ -186,13 +188,41 @@ window.addEventListener("load",()=>setTimeout(()=>{
 <button class="btn light" style="margin-top:10px">Save animal case</button></form>
 <div style="overflow:auto;margin-top:14px"><table class="liveTable"><thead><tr><th>Name</th><th>Species</th><th>Status</th><th>Priority</th></tr></thead><tbody id="dbAnimalRows"></tbody></table></div>`;
 live.appendChild(animalBox);
+const financeBox=document.createElement("div"); financeBox.className="liveOpsPanel";
+financeBox.innerHTML=`<h4>Financial command center</h4>
+<div class="notice" style="background:#183326;color:#dfeae2">Internal organizational financial information — authorized staff only. Funds remain organizational charitable assets; this console provides operational access, not personal ownership.</div>
+<div class="dashGrid" style="margin-top:12px"><div class="dashStat"><strong id="finTotal">$0.00</strong><span>Total recorded donations</span></div><div class="dashStat"><strong id="finAvailable">$0.00</strong><span>Your applicable available program funds</span></div><div class="dashStat"><strong id="finCommitted">$0.00</strong><span>Your committed requests</span></div><div class="dashStat"><strong id="finPending">0</strong><span>Pending requests</span></div></div>
+<div style="overflow:auto;margin-top:14px"><table class="liveTable"><thead><tr><th>Program</th><th>Allocation</th><th>Available</th><th>Committed</th></tr></thead><tbody id="finRows"></tbody></table></div>
+<div class="dashPanels" style="margin-top:15px"><div><h4>Request organizational funds</h4><form id="finRequestForm">
+<div class="field"><label>Program</label><select id="finBudget"></select></div>
+<div class="fields" style="margin-top:8px"><div class="field"><label>Amount (USD)</label><input id="finAmount" type="number" min="0.01" step="0.01" required></div><div class="field"><label>Vendor / recipient</label><input id="finVendor" placeholder="Veterinarian, feed supplier, transporter…"></div></div>
+<div class="field" style="margin-top:8px"><label>Purpose</label><input id="finPurpose" required placeholder="What rescue/program need will this fund?"></div>
+<div class="field" style="margin-top:8px"><label>Animal case ID (optional)</label><input id="finAnimal" placeholder="UUID if applicable"></div>
+<label style="display:flex;gap:8px;align-items:center;margin-top:8px"><input id="finEmergency" type="checkbox" style="width:auto"> Emergency animal-care expense</label>
+<div class="field" style="margin-top:8px"><label>Supporting note</label><textarea id="finNote" placeholder="Invoice, quote, emergency context, or documentation reference"></textarea></div>
+<button class="btn light" style="margin-top:10px">Submit request</button></form></div><div><h4>Recent requests</h4><div id="finRequests" class="list"></div></div></div>`;
+live.appendChild(financeBox);
+async function refreshFinance(){
+ const {data:rows,error}=await sb.from("staff_financial_dashboard").select("*").order("role_name"); if(error){toast("Financial dashboard unavailable: "+error.message);return}
+ const {data:{user}}=await sb.auth.getUser(); const {data:me}=user?await sb.from("staff_profiles").select("role,display_name").eq("user_id",user.id).maybeSingle():{data:null};
+ const mine=rows?.find(x=>x.role_name===(me?.role||"")); const dollars=v=>"$"+(Number(v||0)/100).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+ q("#finTotal").textContent=dollars(rows?.[0]?.total_donations_cents||0); q("#finAvailable").textContent=dollars(mine?.available_cents||0); q("#finCommitted").textContent=dollars(mine?.committed_cents||0);
+ q("#finRows").innerHTML=(rows||[]).map(x=>"<tr><td>"+esc2(x.role_name)+"</td><td>"+Number(x.allocation_percent).toFixed(0)+"%</td><td>"+dollars(x.available_cents)+"</td><td>"+dollars(x.committed_cents)+"</td></tr>").join("")||"<tr><td colspan='4'>No active program budgets.</td></tr>";
+ q("#finBudget").innerHTML=(rows||[]).filter(x=>x.role_name!=="Executive Pool").map(x=>"<option value='"+x.budget_id+"'>"+esc2(x.role_name)+" — "+Number(x.allocation_percent).toFixed(0)+"%</option>").join("")||"<option value=''>No program budgets</option>";
+ const {data:reqs}=await sb.from("budget_requests").select("id,amount_cents,purpose,status,emergency,vendor_name,created_at,requires_executive_multisig,approval_count").order("created_at",{ascending:false}).limit(12);
+ q("#finPending").textContent=(reqs||[]).filter(x=>x.status==="pending").length;
+ q("#finRequests").innerHTML=(reqs||[]).map(x=>"<div class='row'><span><strong>"+dollars(x.amount_cents)+"</strong> "+esc2(x.purpose)+" <small>"+esc2(x.vendor_name||"")+" · "+esc2(x.status)+(x.emergency?" · EMERGENCY":"")+"</small></span><span>"+(x.requires_executive_multisig?esc2(String(x.approval_count||0))+" / 2 approvals":"")+"</span></div>").join("")||"<small>No requests yet.</small>";
+}
+q("#finRequestForm").onsubmit=async e=>{e.preventDefault();const {data:{user}}=await sb.auth.getUser();if(!user){toast("Sign in required.");return}
+ const payload={budget_id:q("#finBudget").value,requested_by:user.id,amount_cents:Math.round(Number(q("#finAmount").value)*100),purpose:q("#finPurpose").value,animal_case_id:q("#finAnimal").value||null,status:"pending",requires_executive_multisig:q("#finEmergency").checked,approval_count:0,vendor_name:q("#finVendor").value||null,emergency:q("#finEmergency").checked,supporting_note:q("#finNote").value||null};
+ const r=await sb.from("budget_requests").insert(payload).select("id").single(); if(r.error)toast(r.error.message);else{await sb.rpc("record_financial_audit",{p_action:"create_budget_request",p_table_name:"budget_requests",p_record_id:r.data.id,p_metadata:{amount_cents:payload.amount_cents,emergency:payload.emergency}});toast("Funding request submitted.");e.target.reset();refreshFinance()}};
+refreshFinance();
+sb.channel("rescue-finance").on("postgres_changes",{event:"*",schema:"public",table:"donations"},refreshFinance).on("postgres_changes",{event:"*",schema:"public",table:"budget_requests"},refreshFinance).on("postgres_changes",{event:"*",schema:"public",table:"executive_approvals"},refreshFinance).subscribe();
 q("#dbAnimalForm").onsubmit=async e=>{e.preventDefault();const r=await sb.from("animal_cases").insert({name:q("#dbAnimalName").value,species_class:q("#dbAnimalClass").value,species:q("#dbAnimalSpecies").value||null,status:q("#dbAnimalStatus").value,priority:q("#dbAnimalPriority").value,current_location:q("#dbAnimalLocation").value||null,notes:q("#dbAnimalNotes").value||null,public_profile:q("#dbAnimalPublic").checked});if(r.error)toast(r.error.message);else{toast("Animal case saved.");e.target.reset();refreshAnimals()}};
 async function refreshAnimals(){const {data}=await sb.from("animal_cases").select("id,name,species_class,species,status,priority,current_location").order("created_at",{ascending:false});q("#dbAnimalRows").innerHTML=(data||[]).map(x=>"<tr><td>"+esc2(x.name)+"</td><td>"+esc2(x.species||x.species_class)+"</td><td>"+esc2(x.status)+"</td><td>"+esc2(x.priority)+"</td></tr>").join("")||"<tr><td colspan='4'>No animal cases.</td></tr>"}
 refreshAnimals();
 sb.channel("rescue-animal-cases").on("postgres_changes",{event:"*",schema:"public",table:"animal_cases"},refreshAnimals).subscribe();
 live.appendChild(box);
- const sb=window.rescueDB;
- const q=sel=>panel.querySelector(sel), esc2=v=>String(v??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
  let horses=[];
  async function refreshOps(){
   const {data:h}=await sb.from("horses").select("*").order("created_at",{ascending:false}); horses=h||[];
