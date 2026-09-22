@@ -1,0 +1,1889 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10251b">
+<meta name="description" content="Horse Rescue — rescue, rehabilitation, adoption, sponsorship and lifelong sanctuary. Every horse deserves a future.">
+<meta name="robots" content="index,follow">
+<title>Horse Rescue | Every Horse Deserves a Future</title>
+
+<style>
+:root{
+  --ink:#10251b;
+  --ink2:#193326;
+  --paper:#f7f4ed;
+  --paper2:#eee8da;
+  --card:#fffdf8;
+  --line:#d8d0c0;
+  --text:#18221c;
+  --muted:#657067;
+  --rust:#b6673d;
+  --gold:#bd9551;
+  --sage:#657a63;
+  --danger:#9b3d32;
+  --shadow:0 18px 55px rgba(16,37,27,.10);
+  --radius:22px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--text);
+  background:var(--paper);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height:1.55;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+.hidden{display:none!important}
+
+.container{
+  width:min(1180px,calc(100% - 36px));
+  margin:auto;
+}
+
+/* NAV */
+.nav{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(247,244,237,.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+.logo{
+  font-size:1.05rem;
+  font-weight:950;
+  letter-spacing:-.045em;
+  white-space:nowrap;
+}
+.logo span{color:var(--rust)}
+.desktop-nav{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  font-size:.88rem;
+  font-weight:800;
+}
+.desktop-nav a:hover{color:var(--rust)}
+.nav-actions{display:flex;gap:8px;align-items:center}
+
+/* BUTTONS */
+.btn{
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:11px 17px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  font-weight:900;
+  transition:.2s ease;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn-dark{
+  background:var(--ink);
+  color:white;
+  border-color:var(--ink);
+}
+.btn-light{
+  background:white;
+  color:var(--ink);
+}
+.btn-rust{
+  background:var(--rust);
+  color:white;
+  border-color:var(--rust);
+}
+.btn-danger{
+  background:var(--danger);
+  color:white;
+  border-color:var(--danger);
+}
+.btn-small{
+  padding:8px 12px;
+  font-size:.82rem;
+}
+
+/* HERO */
+.hero{
+  color:white;
+  background:
+    radial-gradient(circle at 85% 25%,rgba(189,149,81,.23),transparent 30%),
+    linear-gradient(135deg,#0d2118,#1b3829 65%,#274634);
+  padding:76px 0 60px;
+  overflow:hidden;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:50px;
+  align-items:end;
+}
+.eyebrow{
+  color:#e1cda9;
+  text-transform:uppercase;
+  letter-spacing:.17em;
+  font-size:.72rem;
+  font-weight:950;
+}
+.hero h1{
+  font-size:clamp(3.3rem,8vw,7.6rem);
+  line-height:.87;
+  letter-spacing:-.08em;
+  margin:18px 0 26px;
+  max-width:850px;
+}
+.hero-copy{
+  max-width:680px;
+  color:#d8e1da;
+  font-size:1.12rem;
+}
+.hero-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:28px;
+}
+.hero .btn-light{
+  background:white;
+  color:var(--ink);
+  border-color:white;
+}
+.hero .btn-outline{
+  color:white;
+  border-color:rgba(255,255,255,.35);
+}
+.hero .btn-outline:hover{background:rgba(255,255,255,.08)}
+
+.hero-panel{
+  border:1px solid rgba(255,255,255,.17);
+  background:rgba(255,255,255,.07);
+  border-radius:28px;
+  padding:26px;
+  backdrop-filter:blur(8px);
+}
+.hero-panel h3{
+  margin:0 0 16px;
+  font-size:1.3rem;
+}
+.emergency-line{
+  padding:14px;
+  border-radius:15px;
+  background:rgba(182,103,61,.22);
+  border:1px solid rgba(255,255,255,.13);
+  margin-bottom:16px;
+}
+.emergency-line strong{display:block;font-size:1.5rem}
+.emergency-line span{font-size:.84rem;color:#d9e0db}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+.stat{
+  padding:15px;
+  border-radius:15px;
+  background:rgba(255,255,255,.07);
+}
+.stat strong{display:block;font-size:1.65rem}
+.stat small{color:#b9c8be}
+
+/* SECTIONS */
+.section{
+  padding:76px 0;
+}
+.section.alt{background:var(--paper2)}
+.section.dark{background:var(--ink);color:white}
+.section.rust{background:var(--rust);color:white}
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:35px;
+  margin-bottom:30px;
+}
+.kicker{
+  color:var(--rust);
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  font-weight:950;
+  font-size:.7rem;
+}
+.dark .kicker,.rust .kicker{color:#e4c89b}
+.section h2{
+  font-size:clamp(2.2rem,5vw,4.7rem);
+  line-height:.94;
+  letter-spacing:-.065em;
+  margin:8px 0 0;
+}
+.section-head p{
+  max-width:520px;
+  color:var(--muted);
+}
+.dark .section-head p,.rust .section-head p{color:#d3ddd5}
+
+/* CARDS */
+.cards-3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.card-body{padding:23px}
+.card h3{
+  margin:8px 0 8px;
+  font-size:1.5rem;
+  letter-spacing:-.04em;
+}
+.card p{color:var(--muted)}
+.tier-card{
+  min-height:270px;
+  padding:28px;
+  position:relative;
+  overflow:hidden;
+}
+.tier-card:after{
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  right:-65px;
+  bottom:-65px;
+  border-radius:50%;
+  background:var(--paper2);
+}
+.tier-num{
+  color:var(--rust);
+  font-weight:950;
+}
+.tier-card h3{margin-top:38px}
+
+/* HORSES */
+.toolbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+.filters{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+.filter{
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:9px 13px;
+  background:transparent;
+  font-weight:850;
+}
+.filter.active,.filter:hover{
+  background:var(--ink);
+  color:white;
+  border-color:var(--ink);
+}
+.search{
+  border:1px solid var(--line);
+  background:white;
+  border-radius:999px;
+  padding:11px 15px;
+  min-width:220px;
+  outline:none;
+}
+.search:focus{border-color:var(--rust)}
+
+.horse-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+.horse-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 4px 18px rgba(16,37,27,.04);
+}
+.horse-photo{
+  width:100%;
+  height:235px;
+  object-fit:cover;
+  display:block;
+  background:#ddd;
+}
+.horse-body{padding:18px}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 9px;
+  border-radius:999px;
+  background:var(--paper2);
+  font-size:.68rem;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+}
+.badge.adoptable{background:#e4eee0;color:#355333}
+.badge.evaluation{background:#f2e9d7;color:#745b25}
+.badge.sanctuary{background:#e7e4ee;color:#55466f}
+.demo-label{
+  margin-top:10px;
+  color:var(--rust);
+  font-size:.68rem;
+  font-weight:950;
+  letter-spacing:.07em;
+}
+
+/* JOURNEY */
+.journey{
+  display:grid;
+  grid-template-columns:.65fr 1.35fr;
+  gap:55px;
+}
+.steps{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+.step{
+  padding:22px;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:18px;
+}
+.step-num{
+  color:var(--rust);
+  font-size:.7rem;
+  font-weight:950;
+  letter-spacing:.12em;
+}
+.step strong{display:block;margin:7px 0}
+.step span{color:var(--muted);font-size:.9rem}
+
+/* HELP */
+.help-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:13px;
+}
+.help-card{
+  padding:24px;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:20px;
+}
+.help-card .icon{
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  background:var(--paper2);
+  margin-bottom:16px;
+  font-size:1.25rem;
+}
+.help-card h3{margin:0 0 7px}
+.help-card p{color:var(--muted);font-size:.9rem}
+.arrow{color:var(--rust);font-weight:950}
+
+/* FORM */
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.form-field{display:grid;gap:6px}
+.form-field.full{grid-column:1/-1}
+.form-field label{
+  font-size:.78rem;
+  font-weight:900;
+}
+input,select,textarea{
+  width:100%;
+  border:1px solid var(--line);
+  background:white;
+  border-radius:13px;
+  padding:13px 14px;
+  color:var(--text);
+  outline:none;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--rust);
+  box-shadow:0 0 0 3px rgba(182,103,61,.10);
+}
+textarea{min-height:130px;resize:vertical}
+
+/* ADMIN */
+.admin{
+  background:#0b1812;
+  color:#eaf0eb;
+}
+.admin .section-head p{color:#aebdb2}
+.admin-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+.admin-stat{
+  padding:20px;
+  border-radius:18px;
+  background:#14291f;
+  border:1px solid #294235;
+}
+.admin-stat strong{display:block;font-size:2rem}
+.admin-stat span{color:#9db0a3;font-size:.82rem}
+.admin-panels{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  margin-top:15px;
+}
+.admin-panel{
+  padding:22px;
+  background:#14291f;
+  border:1px solid #294235;
+  border-radius:20px;
+}
+.admin-panel h3{margin-top:0}
+.admin input,.admin select,.admin textarea{
+  background:#0d1d15;
+  border-color:#345040;
+  color:#eaf0eb;
+}
+.admin table{
+  width:100%;
+  border-collapse:collapse;
+}
+.admin th,.admin td{
+  padding:10px;
+  border-bottom:1px solid #294235;
+  text-align:left;
+  font-size:.83rem;
+}
+.admin th{color:#aebdb2}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:500;
+  background:rgba(4,12,8,.72);
+  backdrop-filter:blur(8px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+.modal.open{display:flex}
+.modal-box{
+  width:min(760px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:var(--paper);
+  color:var(--text);
+  border-radius:25px;
+  padding:28px;
+  box-shadow:0 30px 100px rgba(0,0,0,.3);
+}
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:start;
+  gap:15px;
+}
+.close{
+  border:0;
+  background:var(--paper2);
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  font-size:1.2rem;
+}
+
+/* TOAST */
+.toast{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:900;
+  background:var(--ink);
+  color:white;
+  padding:14px 18px;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  transform:translateY(140%);
+  transition:.3s ease;
+  max-width:380px;
+}
+.toast.show{transform:translateY(0)}
+
+/* FOOTER */
+footer{
+  background:#09150f;
+  color:#aebbb1;
+  padding:45px 0 90px;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr .8fr;
+  gap:30px;
+}
+.footer-brand{
+  color:white;
+  font-size:1.2rem;
+  font-weight:950;
+}
+.footer h4{color:white;margin-top:0}
+.footer-links{display:grid;gap:7px;font-size:.88rem}
+.footer-links a:hover{color:white}
+
+/* MOBILE */
+.mobile-bar{
+  display:none;
+}
+@media(max-width:950px){
+  .desktop-nav{display:none}
+  .hero-grid,.journey{grid-template-columns:1fr}
+  .cards-3,.horse-grid{grid-template-columns:repeat(2,1fr)}
+  .help-grid{grid-template-columns:repeat(2,1fr)}
+  .admin-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:650px){
+  .container{width:min(100% - 28px,1180px)}
+  .hero{padding:55px 0 42px}
+  .hero h1{font-size:clamp(3rem,18vw,5rem)}
+  .section{padding:56px 0}
+  .section-head{display:block}
+  .cards-3,.horse-grid,.help-grid,.admin-grid,.admin-panels,.footer-grid{grid-template-columns:1fr}
+  .steps,.form-grid{grid-template-columns:1fr}
+  .form-field.full{grid-column:auto}
+  .search{width:100%;min-width:0}
+  .nav-actions .btn-light{display:none}
+  .mobile-bar{
+    display:flex;
+    position:fixed;
+    left:10px;
+    right:10px;
+    bottom:10px;
+    z-index:300;
+    background:var(--ink);
+    color:white;
+    border-radius:18px;
+    padding:8px;
+    justify-content:space-around;
+    box-shadow:0 12px 45px rgba(0,0,0,.28);
+  }
+  .mobile-bar a{
+    font-size:.7rem;
+    font-weight:850;
+    padding:7px;
+  }
+}
+
+/* PRINT */
+@media print{
+  .nav,.mobile-bar,.hero-actions,.toolbar,.btn,.toast,footer{display:none!important}
+  .section{padding:20px 0}
+}
+</style>
+</head>
+
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="#top">HORSE<span>RESCUE</span></a>
+
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <a href="#horses">Horses</a>
+      <a href="#model">Our Model</a>
+      <a href="#journey">Journey</a>
+      <a href="#help">Help</a>
+      <a href="#contact">Contact</a>
+      <a href="#admin">Operations</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a class="btn btn-light btn-small" href="#horses">Meet Horses</a>
+      <a class="btn btn-dark btn-small" href="#help">Help Save One</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">Williams, Arizona · Emergency Equine Rescue</div>
+
+      <h1>Every horse deserves a future.</h1>
+
+      <p class="hero-copy">
+        A horse-first rescue platform built to move horses from crisis to safety,
+        rehabilitation, adoption, or lifelong sanctuary — with honest records,
+        transparent outcomes, and a community built around care.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-light" href="#horses">Meet the Horses →</a>
+        <a class="btn btn-outline" href="#help">Get Involved</a>
+        <a class="btn btn-outline" href="#contact">Contact Rescue</a>
+      </div>
+    </div>
+
+    <aside class="hero-panel">
+      <div class="eyebrow">Current emergency mission</div>
+
+      <div class="emergency-line">
+        <strong>45 horses</strong>
+        <span>Current emergency rescue target</span>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <strong>3</strong>
+          <small>Welfare outcome pathways</small>
+        </div>
+        <div class="stat">
+          <strong>24/7</strong>
+          <small>Commitment to each horse</small>
+        </div>
+        <div class="stat">
+          <strong>1</strong>
+          <small>Horse-first mission</small>
+        </div>
+        <div class="stat">
+          <strong>∞</strong>
+          <small>Long-term possibilities</small>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="kicker">The mission</div>
+        <h2>Rescue first. Understand completely. Place responsibly.</h2>
+      </div>
+      <p>
+        Every horse gets an individual assessment. Outcome status is based on
+        welfare, veterinary, behavioral, training, and practical considerations —
+        never on a horse's perceived value.
+      </p>
+    </div>
+
+    <div class="cards-3" id="model">
+
+      <article class="card tier-card">
+        <div class="tier-num">01 · ADOPTABLE</div>
+        <h3>Ready for the next chapter.</h3>
+        <p>
+          Horses assessed as appropriate for adoption can receive a detailed
+          public profile and a responsible home-matching process.
+        </p>
+      </article>
+
+      <article class="card tier-card">
+        <div class="tier-num">02 · EVALUATION</div>
+        <h3>Still healing. Still learning.</h3>
+        <p>
+          Horses continue veterinary care, rehabilitation, training and
+          behavioral evaluation while the best long-term outcome is determined.
+        </p>
+      </article>
+
+      <article class="card tier-card">
+        <div class="tier-num">03 · SANCTUARY</div>
+        <h3>Here for life.</h3>
+        <p>
+          Permanent pasture or sanctuary care is available when lifelong care
+          is the most appropriate welfare outcome. Sanctuary is not a lesser
+          status.
+        </p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- HORSES -->
+<section class="section alt" id="horses">
+  <div class="container">
+
+    <div class="section-head">
+      <div>
+        <div class="kicker">Horse directory</div>
+        <h2>Follow every journey.</h2>
+      </div>
+      <p>
+        These example profiles demonstrate the platform. Replace them with
+        verified horse records before presenting them as real rescue cases.
+      </p>
+    </div>
+
+    <div class="toolbar">
+      <div class="filters" role="group" aria-label="Horse filters">
+        <button class="filter active" data-filter="all">All</button>
+        <button class="filter" data-filter="adoptable">Adoptable</button>
+        <button class="filter" data-filter="evaluation">Evaluation</button>
+        <button class="filter" data-filter="sanctuary">Sanctuary</button>
+      </div>
+
+      <input id="horseSearch" class="search" placeholder="Search horses..." aria-label="Search horses">
+    </div>
+
+    <div class="horse-grid" id="horseGrid"></div>
+
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section class="section" id="journey">
+  <div class="container journey">
+
+    <div>
+      <div class="kicker">Rescue journey</div>
+      <h2>From crisis to clarity.</h2>
+
+      <p style="color:var(--muted);margin-top:20px">
+        A consistent journey gives staff, supporters and future adopters a
+        clear picture of what happens after rescue.
+      </p>
+
+      <a class="btn btn-dark" href="#contact">Support the Mission →</a>
+    </div>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">01</div>
+        <strong>Rescued</strong>
+        <span>Document origin, urgency, identification and transport status.</span>
+      </div>
+
+      <div class="step">
+        <div class="step-num">02</div>
+        <strong>Safe Intake</strong>
+        <span>Photographs, identification, baseline observations and records.</span>
+      </div>
+
+      <div class="step">
+        <div class="step-num">03</div>
+        <strong>Quarantine</strong>
+        <span>Biosecurity separation and initial health monitoring.</span>
+      </div>
+
+      <div class="step">
+        <div class="step-num">04</div>
+        <strong>Assessment</strong>
+        <span>Veterinary, dental, behavioral and handling evaluation.</span>
+      </div>
+
+      <div class="step">
+        <div class="step-num">05</div>
+        <strong>Rehabilitation</strong>
+        <span>Nutrition, treatment, training, recovery and confidence building.</span>
+      </div>
+
+      <div class="step">
+        <div class="step-num">06</div>
+        <strong>Outcome</strong>
+        <span>Adoption, continued evaluation, or permanent sanctuary.</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TRANSPARENCY -->
+<section class="section rust">
+  <div class="container">
+    <div class="kicker">Transparency by design</div>
+
+    <h2 style="max-width:850px">
+      Make every horse's story visible without compromising safety or privacy.
+    </h2>
+
+    <p style="max-width:760px;font-size:1.05rem">
+      The platform is structured so supporters can eventually follow rescue,
+      rehabilitation, milestones, adoption and sanctuary stories while
+      sensitive medical, financial and personal information remains protected.
+    </p>
+
+    <div style="margin-top:25px">
+      <a class="btn btn-light" href="#contact">Build the Network →</a>
+    </div>
+  </div>
+</section>
+
+<!-- HELP -->
+<section class="section" id="help">
+  <div class="container">
+
+    <div class="section-head">
+      <div>
+        <div class="kicker">Get involved</div>
+        <h2>There is more than one way to help.</h2>
+      </div>
+
+      <p>
+        Rescue requires an entire network: adopters, sponsors, volunteers,
+        veterinarians, dentists, transporters, feed suppliers, fencing
+        providers and supporters.
+      </p>
+    </div>
+
+    <div class="help-grid">
+
+      <a class="help-card" href="#contact" data-interest="Adoption">
+        <div class="icon">🏠</div>
+        <h3>Adopt</h3>
+        <p>Help give an appropriate horse a safe and responsible next home.</p>
+        <div class="arrow">Adoption interest →</div>
+      </a>
+
+      <a class="help-card" href="#contact" data-interest="Sponsorship">
+        <div class="icon">❤️</div>
+        <h3>Sponsor</h3>
+        <p>Support rehabilitation or lifelong sanctuary care.</p>
+        <div class="arrow">Sponsor a horse →</div>
+      </a>
+
+      <a class="help-card" href="#contact" data-interest="Professional partnership">
+        <div class="icon">🩺</div>
+        <h3>Professional Care</h3>
+        <p>Veterinary, dental, farrier, training and other professional support.</p>
+        <div class="arrow">Become a partner →</div>
+      </a>
+
+      <a class="help-card" href="#contact" data-interest="Transportation support">
+        <div class="icon">🚚</div>
+        <h3>Transport</h3>
+        <p>Help safely move horses from emergency situations into care.</p>
+        <div class="arrow">Transport support →</div>
+      </a>
+
+      <a class="help-card" href="#contact" data-interest="Feed / fencing / supply donation">
+        <div class="icon">🌾</div>
+        <h3>Supplies</h3>
+        <p>Feed, hay, fencing, corrals, equipment and essential supplies.</p>
+        <div class="arrow">Supply partnership →</div>
+      </a>
+
+      <a class="help-card" href="#contact" data-interest="Volunteering">
+        <div class="icon">🤝</div>
+        <h3>Volunteer</h3>
+        <p>Hands-on care, events, administration, fundraising and outreach.</p>
+        <div class="arrow">Volunteer →</div>
+      </a>
+
+      <a class="help-card" href="#contact" data-interest="Major support">
+        <div class="icon">🌎</div>
+        <h3>Major Support</h3>
+        <p>Help build long-term rescue infrastructure and capacity.</p>
+        <div class="arrow">Major support →</div>
+      </a>
+
+      <a class="help-card" href="#contact" data-interest="Other">
+        <div class="icon">✨</div>
+        <h3>Something Else</h3>
+        <p>Have an idea we haven't listed? Tell us what you can contribute.</p>
+        <div class="arrow">Start a conversation →</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section alt" id="contact">
+  <div class="container">
+
+    <div class="section-head">
+      <div>
+        <div class="kicker">Get connected</div>
+        <h2>Tell us how you want to help.</h2>
+      </div>
+
+      <p>
+        This static version stores submissions in the browser for demonstration.
+        Connect a secure backend before using this for actual public submissions.
+      </p>
+    </div>
+
+    <form id="interestForm" class="card" style="padding:25px">
+
+      <div class="form-grid">
+
+        <div class="form-field">
+          <label for="name">Name</label>
+          <input id="name" required placeholder="Your name">
+        </div>
+
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input id="email" type="email" required placeholder="you@example.com">
+        </div>
+
+        <div class="form-field">
+          <label for="phone">Phone</label>
+          <input id="phone" placeholder="Optional">
+        </div>
+
+        <div class="form-field">
+          <label for="interest">How can you help?</label>
+          <select id="interest">
+            <option>Adoption</option>
+            <option>Sponsorship</option>
+            <option>Volunteering</option>
+            <option>Professional partnership</option>
+            <option>Feed / fencing / supply donation</option>
+            <option>Transportation support</option>
+            <option>Major support</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-field full">
+          <label for="message">Message</label>
+          <textarea id="message" placeholder="Tell us what you'd like to do."></textarea>
+        </div>
+
+      </div>
+
+      <button class="btn btn-dark" type="submit" style="margin-top:15px">
+        Save Interest
+      </button>
+
+    </form>
+
+  </div>
+</section>
+
+<!-- ADMIN / OPERATIONS -->
+<section class="section admin" id="admin">
+  <div class="container">
+
+    <div class="section-head">
+      <div>
+        <div class="kicker">Browser operations cockpit</div>
+        <h2>Rescue operations.</h2>
+      </div>
+
+      <p>
+        Prototype operational tools for intake, care, tasks and interest
+        management. Data is stored locally in this browser only.
+      </p>
+    </div>
+
+    <div class="admin-grid">
+
+      <div class="admin-stat">
+        <strong id="adminHorseCount">0</strong>
+        <span>Horse records</span>
+      </div>
+
+      <div class="admin-stat">
+        <strong id="adminInterestCount">0</strong>
+        <span>Interest submissions</span>
+      </div>
+
+      <div class="admin-stat">
+        <strong id="adminCareCount">0</strong>
+        <span>Care records</span>
+      </div>
+
+      <div class="admin-stat">
+        <strong id="adminTaskCount">0</strong>
+        <span>Open tasks</span>
+      </div>
+
+    </div>
+
+    <div class="admin-panels">
+
+      <div class="admin-panel">
+        <h3>Add horse record</h3>
+
+        <form id="horseForm">
+
+          <div class="form-field">
+            <label>Name</label>
+            <input id="horseName" required placeholder="Horse name">
+          </div>
+
+          <div class="form-field">
+            <label>Tier</label>
+            <select id="horseTier">
+              <option value="evaluation">Evaluation</option>
+              <option value="adoptable">Adoptable</option>
+              <option value="sanctuary">Sanctuary</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Breed</label>
+            <input id="horseBreed" placeholder="Unknown / breed">
+          </div>
+
+          <div class="form-field">
+            <label>Age</label>
+            <input id="horseAge" placeholder="Unknown / age">
+          </div>
+
+          <div class="form-field">
+            <label>Notes</label>
+            <textarea id="horseNotes" placeholder="Internal prototype notes"></textarea>
+          </div>
+
+          <button class="btn btn-light" type="submit">
+            Add Horse
+          </button>
+
+        </form>
+      </div>
+
+      <div class="admin-panel">
+        <h3>Add care record</h3>
+
+        <form id="careForm">
+
+          <div class="form-field">
+            <label>Horse</label>
+            <select id="careHorse"></select>
+          </div>
+
+          <div class="form-field">
+            <label>Care type</label>
+            <select id="careType">
+              <option>Veterinary</option>
+              <option>Dental</option>
+              <option>Nutrition</option>
+              <option>Medication</option>
+              <option>Training</option>
+              <option>Behavior</option>
+              <option>General observation</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Record</label>
+            <textarea id="careNotes" placeholder="Record what occurred"></textarea>
+          </div>
+
+          <button class="btn btn-light" type="submit">
+            Add Care Record
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+
+    <div class="admin-panels">
+
+      <div class="admin-panel">
+        <h3>Open tasks</h3>
+
+        <form id="taskForm">
+
+          <div class="form-field">
+            <label>Task</label>
+            <input id="taskText" required placeholder="Example: Arrange hay delivery">
+          </div>
+
+          <button class="btn btn-light" type="submit">
+            Add Task
+          </button>
+
+        </form>
+
+        <div id="taskList" style="margin-top:18px"></div>
+      </div>
+
+      <div class="admin-panel">
+        <h3>Data tools</h3>
+
+        <p style="color:#aebdb2">
+          Export your browser data before clearing the browser or moving to
+          another device. This export is not a substitute for secure cloud
+          storage.
+        </p>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button id="exportData" class="btn btn-light">Export JSON</button>
+          <button id="clearData" class="btn btn-danger">Clear Local Data</button>
+        </div>
+
+        <input id="importFile" type="file" accept=".json" style="margin-top:15px">
+
+      </div>
+
+    </div>
+
+    <div class="admin-panel" style="margin-top:15px;overflow:auto">
+      <h3>Recent care records</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Horse</th>
+            <th>Type</th>
+            <th>Record</th>
+          </tr>
+        </thead>
+
+        <tbody id="careTable"></tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container footer-grid">
+
+    <div>
+      <div class="footer-brand">HORSE RESCUE</div>
+
+      <p>
+        Every horse deserves a future — whether that future is adoption,
+        continued rehabilitation, or lifelong sanctuary.
+      </p>
+
+      <p style="font-size:.8rem">
+        Williams, Arizona · Horse-first care.
+      </p>
+    </div>
+
+    <div>
+      <h4>Explore</h4>
+      <div class="footer-links">
+        <a href="#horses">Horses</a>
+        <a href="#model">Our Model</a>
+        <a href="#journey">Rescue Journey</a>
+        <a href="#help">Get Involved</a>
+      </div>
+    </div>
+
+    <div>
+      <h4>Connect</h4>
+      <div class="footer-links">
+        <a href="#contact">Contact</a>
+        <a href="#admin">Operations</a>
+        <a href="#top">Back to top</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<!-- MOBILE BAR -->
+<nav class="mobile-bar" aria-label="Mobile navigation">
+  <a href="#top">Home</a>
+  <a href="#horses">Horses</a>
+  <a href="#help">Help</a>
+  <a href="#contact">Contact</a>
+  <a href="#admin">Ops</a>
+</nav>
+
+<!-- HORSE MODAL -->
+<div class="modal" id="horseModal">
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <div>
+        <div class="kicker">Horse profile</div>
+        <h2 id="modalHorseName" style="margin:7px 0"></h2>
+      </div>
+
+      <button class="close" data-close="horseModal">×</button>
+    </div>
+
+    <div id="modalHorseBody"></div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==========================================================
+   HORSE RESCUE WEB PLATFORM
+   Static GitHub Pages edition
+   ========================================================== */
+
+const STORAGE_KEY = "horseRescuePlatform_v1";
+
+const defaultData = {
+  horses: [
+    {
+      id:"demo-a",
+      name:"Demo Horse A",
+      tier:"adoptable",
+      breed:"Example profile",
+      age:"Unknown",
+      notes:"DEMO DATA — replace with a verified rescue record.",
+      photo:"https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=1200&q=82",
+      demo:true
+    },
+    {
+      id:"demo-b",
+      name:"Demo Horse B",
+      tier:"evaluation",
+      breed:"Example profile",
+      age:"Unknown",
+      notes:"DEMO DATA — replace with a verified rescue record.",
+      photo:"https://images.unsplash.com/photo-1551884831-bbf3cdc6469e?auto=format&fit=crop&w=1200&q=82",
+      demo:true
+    },
+    {
+      id:"demo-c",
+      name:"Demo Horse C",
+      tier:"sanctuary",
+      breed:"Example profile",
+      age:"Unknown",
+      notes:"DEMO DATA — replace with a verified rescue record.",
+      photo:"https://images.unsplash.com/photo-1534773728080-33d31da27ae5?auto=format&fit=crop&w=1200&q=82",
+      demo:true
+    }
+  ],
+  interests:[],
+  care:[],
+  tasks:[]
+};
+
+function loadData(){
+  try{
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if(!saved){
+      localStorage.setItem(STORAGE_KEY,JSON.stringify(defaultData));
+      return structuredClone(defaultData);
+    }
+
+    const parsed = JSON.parse(saved);
+
+    return {
+      horses:Array.isArray(parsed.horses)?parsed.horses:[],
+      interests:Array.isArray(parsed.interests)?parsed.interests:[],
+      care:Array.isArray(parsed.care)?parsed.care:[],
+      tasks:Array.isArray(parsed.tasks)?parsed.tasks:[]
+    };
+  }catch(error){
+    console.error(error);
+    return structuredClone(defaultData);
+  }
+}
+
+let data = loadData();
+
+function saveData(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+}
+
+function uid(prefix="id"){
+  return prefix+"_"+Date.now()+"_"+Math.random().toString(36).slice(2,8);
+}
+
+function esc(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function toast(message){
+  const el=document.getElementById("toast");
+  el.textContent=message;
+  el.classList.add("show");
+
+  clearTimeout(window.__toastTimer);
+
+  window.__toastTimer=setTimeout(()=>{
+    el.classList.remove("show");
+  },3500);
+}
+
+function tierLabel(tier){
+  return {
+    adoptable:"Adoptable",
+    evaluation:"Evaluation",
+    sanctuary:"Sanctuary"
+  }[tier] || "Evaluation";
+}
+
+function renderHorses(){
+  const grid=document.getElementById("horseGrid");
+
+  const activeFilter=
+    document.querySelector(".filter.active")?.dataset.filter || "all";
+
+  const query=
+    document.getElementById("horseSearch")?.value
+      .trim()
+      .toLowerCase() || "";
+
+  const filtered=data.horses.filter(h=>{
+    const matchesTier=
+      activeFilter==="all" || h.tier===activeFilter;
+
+    const haystack=[
+      h.name,
+      h.breed,
+      h.age,
+      h.notes,
+      h.tier
+    ].join(" ").toLowerCase();
+
+    return matchesTier && haystack.includes(query);
+  });
+
+  if(!filtered.length){
+    grid.innerHTML=`
+      <div class="card" style="padding:30px;grid-column:1/-1">
+        <h3>No horses match this search.</h3>
+        <p>Try another filter or search term.</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML=filtered.map(h=>`
+    <article class="horse-card">
+
+      <img
+        class="horse-photo"
+        src="${esc(h.photo || "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=1200&q=82")}"
+        alt="${esc(h.name)}"
+        loading="lazy"
+      >
+
+      <div class="horse-body">
+
+        <span class="badge ${esc(h.tier)}">
+          ${esc(tierLabel(h.tier))}
+        </span>
+
+        <h3>${esc(h.name)}</h3>
+
+        <p>
+          ${esc(h.breed || "Individual horse profile")}
+          ${h.age ? " · "+esc(h.age) : ""}
+        </p>
+
+        <p>
+          ${esc(h.notes || "Profile information will appear here.")}
+        </p>
+
+        ${h.demo ? `<div class="demo-label">DEMO DATA — NOT A REAL HORSE</div>` : ""}
+
+        <button
+          class="btn btn-dark btn-small"
+          style="margin-top:12px"
+          onclick="openHorse('${esc(h.id)}')"
+        >
+          View Profile
+        </button>
+
+      </div>
+    </article>
+  `).join("");
+}
+
+function openHorse(id){
+  const horse=data.horses.find(h=>h.id===id);
+
+  if(!horse)return;
+
+  document.getElementById("modalHorseName").textContent=horse.name;
+
+  document.getElementById("modalHorseBody").innerHTML=`
+    <img
+      src="${esc(horse.photo)}"
+      alt="${esc(horse.name)}"
+      style="width:100%;max-height:370px;object-fit:cover;border-radius:18px"
+    >
+
+    <div style="margin-top:20px">
+      <span class="badge ${esc(horse.tier)}">
+        ${esc(tierLabel(horse.tier))}
+      </span>
+
+      <div class="cards-3" style="margin-top:16px">
+
+        <div class="card" style="padding:16px">
+          <strong>Breed</strong>
+          <div>${esc(horse.breed || "Not recorded")}</div>
+        </div>
+
+        <div class="card" style="padding:16px">
+          <strong>Age</strong>
+          <div>${esc(horse.age || "Not recorded")}</div>
+        </div>
+
+        <div class="card" style="padding:16px">
+          <strong>Status</strong>
+          <div>${esc(tierLabel(horse.tier))}</div>
+        </div>
+
+      </div>
+
+      <h3>Story / Notes</h3>
+
+      <p>${esc(horse.notes || "No public notes recorded.")}</p>
+
+      ${horse.demo ? `
+        <div style="
+          padding:14px;
+          border-radius:13px;
+          background:#f2e9d7;
+          color:#654d22;
+          font-weight:800;
+        ">
+          This is demonstration data. Replace it with verified information
+          before presenting the horse publicly.
+        </div>
+      ` : ""}
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px">
+        <button
+          class="btn btn-dark"
+          onclick="selectInterest('Adoption','${esc(horse.name)}')"
+        >
+          Adoption Interest
+        </button>
+
+        <button
+          class="btn"
+          onclick="selectInterest('Sponsorship','${esc(horse.name)}')"
+        >
+          Sponsor This Horse
+        </button>
+      </div>
+
+    </div>
+  `;
+
+  document.getElementById("horseModal").classList.add("open");
+}
+
+function selectInterest(type,horseName=""){
+  document.getElementById("interest").value=type;
+
+  if(horseName){
+    document.getElementById("message").value=
+      `I am interested in ${type.toLowerCase()} for ${horseName}.`;
+  }
+
+  document.getElementById("horseModal").classList.remove("open");
+
+  document.getElementById("contact").scrollIntoView({
+    behavior:"smooth"
+  });
+}
+
+window.openHorse=openHorse;
+window.selectInterest=selectInterest;
+
+/* FILTERS */
+
+document.querySelectorAll(".filter").forEach(button=>{
+  button.addEventListener("click",()=>{
+    document.querySelectorAll(".filter")
+      .forEach(b=>b.classList.remove("active"));
+
+    button.classList.add("active");
+
+    renderHorses();
+  });
+});
+
+document.getElementById("horseSearch")
+  .addEventListener("input",renderHorses);
+
+/* MODAL */
+
+document.querySelectorAll("[data-close]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    document.getElementById(button.dataset.close)
+      .classList.remove("open");
+  });
+});
+
+document.getElementById("horseModal")
+  .addEventListener("click",event=>{
+    if(event.target.id==="horseModal"){
+      event.currentTarget.classList.remove("open");
+    }
+  });
+
+/* HELP CARD PRESELECT */
+
+document.querySelectorAll("[data-interest]").forEach(card=>{
+  card.addEventListener("click",()=>{
+    setTimeout(()=>{
+      document.getElementById("interest").value=
+        card.dataset.interest;
+    },100);
+  });
+});
+
+/* INTEREST FORM */
+
+document.getElementById("interestForm")
+  .addEventListener("submit",event=>{
+    event.preventDefault();
+
+    const record={
+      id:uid("interest"),
+      date:new Date().toISOString(),
+      name:document.getElementById("name").value.trim(),
+      email:document.getElementById("email").value.trim(),
+      phone:document.getElementById("phone").value.trim(),
+      interest:document.getElementById("interest").value,
+      message:document.getElementById("message").value.trim()
+    };
+
+    data.interests.unshift(record);
+
+    saveData();
+    updateAdmin();
+
+    event.target.reset();
+
+    toast(
+      "Saved in this browser. Connect a secure backend before using this for live public submissions."
+    );
+  });
+
+/* HORSE FORM */
+
+document.getElementById("horseForm")
+  .addEventListener("submit",event=>{
+    event.preventDefault();
+
+    const horse={
+      id:uid("horse"),
+      name:document.getElementById("horseName").value.trim(),
+      tier:document.getElementById("horseTier").value,
+      breed:document.getElementById("horseBreed").value.trim(),
+      age:document.getElementById("horseAge").value.trim(),
+      notes:document.getElementById("horseNotes").value.trim(),
+      photo:"https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=1200&q=82",
+      demo:false
+    };
+
+    data.horses.unshift(horse);
+
+    saveData();
+    renderHorses();
+    updateAdmin();
+    updateCareHorseOptions();
+
+    event.target.reset();
+
+    toast("Horse record added to this browser.");
+  });
+
+/* CARE FORM */
+
+document.getElementById("careForm")
+  .addEventListener("submit",event=>{
+    event.preventDefault();
+
+    const horseId=document.getElementById("careHorse").value;
+
+    if(!horseId){
+      toast("Add a horse record first.");
+      return;
+    }
+
+    const horse=data.horses.find(h=>h.id===horseId);
+
+    const record={
+      id:uid("care"),
+      date:new Date().toISOString(),
+      horseId,
+      horseName:horse?.name || "Unknown",
+      type:document.getElementById("careType").value,
+      notes:document.getElementById("careNotes").value.trim()
+    };
+
+    data.care.unshift(record);
+
+    saveData();
+    updateAdmin();
+
+    document.getElementById("careNotes").value="";
+
+    toast("Care record saved locally.");
+  });
+
+/* TASK FORM */
+
+document.getElementById("taskForm")
+  .addEventListener("submit",event=>{
+    event.preventDefault();
+
+    const task={
+      id:uid("task"),
+      date:new Date().toISOString(),
+      text:document.getElementById("taskText").value.trim(),
+      complete:false
+    };
+
+    data.tasks.unshift(task);
+
+    saveData();
+    updateAdmin();
+
+    event.target.reset();
+
+    toast("Task added.");
+  });
+
+function updateCareHorseOptions(){
+  const select=document.getElementById("careHorse");
+
+  select.innerHTML=data.horses.map(h=>`
+    <option value="${esc(h.id)}">${esc(h.name)}</option>
+  `).join("");
+}
+
+function updateAdmin(){
+
+  document.getElementById("adminHorseCount").textContent=
+    data.horses.length;
+
+  document.getElementById("adminInterestCount").textContent=
+    data.interests.length;
+
+  document.getElementById("adminCareCount").textContent=
+    data.care.length;
+
+  document.getElementById("adminTaskCount").textContent=
+    data.tasks.filter(t=>!t.complete).length;
+
+  document.getElementById("taskList").innerHTML=
+    data.tasks.length
+      ? data.tasks.map(task=>`
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          gap:10px;
+          align-items:center;
+          padding:10px 0;
+          border-bottom:1px solid #294235;
+        ">
+          <label style="
+            display:flex;
+            gap:8px;
+            align-items:center;
+            ${task.complete?"text-decoration:line-through;opacity:.55":""}
+          ">
+            <input
+              type="checkbox"
+              ${task.complete?"checked":""}
+              onchange="toggleTask('${task.id}')"
+            >
+            ${esc(task.text)}
+          </label>
+
+          <button
+            class="btn btn-danger btn-small"
+            onclick="deleteTask('${task.id}')"
+          >
+            ×
+          </button>
+        </div>
+      `).join("")
+      :
+      `<p style="color:#9db0a3">No tasks yet.</p>`;
+
+  document.getElementById("careTable").innerHTML=
+    data.care.length
+      ? data.care.slice(0,20).map(record=>`
+        <tr>
+          <td>${new Date(record.date).toLocaleDateString()}</td>
+          <td>${esc(record.horseName)}</td>
+          <td>${esc(record.type)}</td>
+          <td>${esc(record.notes)}</td>
+        </tr>
+      `).join("")
+      :
+      `<tr><td colspan="4">No care records yet.</td></tr>`;
+}
+
+function toggleTask(id){
+  const task=data.tasks.find(t=>t.id===id);
+
+  if(task){
+    task.complete=!task.complete;
+    saveData();
+    updateAdmin();
+  }
+}
+
+function deleteTask(id){
+  data.tasks=data.tasks.filter(t=>t.id!==id);
+  saveData();
+  updateAdmin();
+}
+
+window.toggleTask=toggleTask;
+window.deleteTask=deleteTask;
+
+/* EXPORT */
+
+document.getElementById("exportData")
+  .addEventListener("click",()=>{
+
+    const blob=new Blob(
+      [JSON.stringify(data,null,2)],
+      {type:"application/json"}
+    );
+
+    const url=URL.createObjectURL(blob);
+
+    const a=document.createElement("a");
+    a.href=url;
+    a.download=
+      "horse-rescue-data-"+new Date().toISOString().slice(0,10)+".json";
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+    toast("Data export created.");
+  });
+
+/* IMPORT */
+
+document.getElementById("importFile")
+  .addEventListener("change",event=>{
+
+    const file=event.target.files[0];
+
+    if(!file)return;
+
+    const reader=new FileReader();
+
+    reader.onload=()=>{
+      try{
+        const imported=JSON.parse(reader.result);
+
+        if(
+          !Array.isArray(imported.horses) ||
+          !Array.isArray(imported.interests) ||
+          !Array.isArray(imported.care) ||
+          !Array.isArray(imported.tasks)
+        ){
+          throw new Error("Invalid data format");
+        }
+
+        data=imported;
+
+        saveData();
+        renderHorses();
+        updateAdmin();
+        updateCareHorseOptions();
+
+        toast("Data imported successfully.");
+      }catch(error){
+        toast("Import failed: invalid rescue data file.");
+      }
+    };
+
+    reader.readAsText(file);
+  });
+
+/* CLEAR */
+
+document.getElementById("clearData")
+  .addEventListener("click",()=>{
+
+    const confirmed=confirm(
+      "Clear all locally stored rescue data from this browser?"
+    );
+
+    if(!confirmed)return;
+
+    localStorage.removeItem(STORAGE_KEY);
+
+    data=structuredClone(defaultData);
+
+    saveData();
+    renderHorses();
+    updateAdmin();
+    updateCareHorseOptions();
+
+    toast("Local data reset.");
+  });
+
+/* INITIALIZE */
+
+renderHorses();
+updateAdmin();
+updateCareHorseOptions();
+
+/* Keyboard accessibility */
+
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){
+    document.querySelectorAll(".modal.open")
+      .forEach(modal=>modal.classList.remove("open"));
+  }
+});
+
+/* Smooth internal navigation */
+
+document.querySelectorAll('a[href^="#"]').forEach(link=>{
+  link.addEventListener("click",()=>{
+    const target=document.querySelector(link.getAttribute("href"));
+
+    if(target){
+      setTimeout(()=>{
+        target.setAttribute("tabindex","-1");
+      },500);
+    }
+  });
+});
+</script>
+
+</body>
+</html>
