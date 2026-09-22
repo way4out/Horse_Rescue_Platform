@@ -22,7 +22,8 @@ footer{background:#09150f;color:#b7c5ba;padding:42px 0}.mobile{display:none}.mod
 @media(max-width:850px){.links{display:none}.heroGrid,.grid3,.grid4,.horseGrid,.dashPanels{grid-template-columns:1fr}.head{display:block}.fields{grid-template-columns:1fr}.full{grid-column:auto}.nav .btn{display:none}.mobile{display:flex;position:fixed;bottom:10px;left:10px;right:10px;z-index:40;background:var(--ink);color:#fff;border-radius:16px;justify-content:space-around;padding:9px 5px;font-size:.72rem;font-weight:850;box-shadow:0 8px 30px #0004}.mobile a{padding:2px 5px}.dashGrid{grid-template-columns:repeat(2,1fr)}.search{width:100%;min-width:0}.hero{padding-top:58px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
 </style>
-</head>
+
+<style id="live-ops-style">#liveOps{display:none}.authbar{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-bottom:12px}.liveBadge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#e4eee0;color:#355333;font-size:.72rem;font-weight:900}.liveOpsPanel{margin-top:15px}.liveTable{width:100%;border-collapse:collapse}.liveTable th,.liveTable td{padding:10px 8px;border-bottom:1px solid #294235;text-align:left;font-size:.86rem}.liveTable th{color:#b9c9bd}.authbox{max-width:520px}</style></head>
 <body>
 <header class="nav"><div class="wrap navin"><a class="logo" href="#top">HORSE<b>RESCUE</b></a><nav class="links"><a href="#horses">Horses</a><a href="#model">Care Model</a><a href="#help">Help</a><a href="#contact">Contact</a><a href="#operations">Operations</a></nav><a class="btn dark" href="#contact">Help Save One</a></div></header>
 <main id="top">
@@ -107,4 +108,31 @@ window.initSupabaseRescue=function(){
     if(mapped.length){data.horses=mapped;window.localStorage.setItem(KEY,JSON.stringify(data));render();}
   });
 };
+</script><script id="live-ops-js">
+(function(){
+ const cfg=window.SUPABASE_CONFIG;
+ if(!cfg?.url||!cfg?.publishableKey)return;
+ function loadSDK(){return new Promise((resolve,reject)=>{if(window.supabase?.createClient)return resolve();const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';s.onload=resolve;s.onerror=reject;document.head.appendChild(s)})}
+ window.addEventListener('load',async()=>{
+  try{await loadSDK();const sb=window.supabase.createClient(cfg.url,cfg.publishableKey);window.rescueDB=sb;
+   const panel=document.createElement('div');panel.id='liveOps';panel.className='wrap';panel.style.marginTop='18px';panel.innerHTML='<div class="dashPanel"><div class="authbar"><span class="liveBadge">● LIVE SUPABASE</span><span id="staffState"></span><button class="btn small light" id="staffLogout" hidden>Sign out</button></div><div id="authArea"><h3>Staff access</h3><p>Authorized rescue staff can access the live operations console.</p><form id="staffLogin" class="authbox"><div class="field"><label>Email</label><input id="staffEmail" type="email" required placeholder="staff@rescue.org"></div><div class="field" style="margin-top:8px"><label>Password</label><input id="staffPassword" type="password" required></div><button class="btn light" style="margin-top:10px">Sign in</button></form></div><div id="liveArea" hidden><div class="dashGrid"><div class="dashStat"><strong id="liveHorses">0</strong><span>Live horses</span></div><div class="dashStat"><strong id="liveTasks">0</strong><span>Open tasks</span></div><div class="dashStat"><strong id="liveCare">0</strong><span>Care events</span></div><div class="dashStat"><strong id="liveTransport">0</strong><span>Transport cases</span></div></div><div class="liveOpsPanel"><h3>Live horses</h3><div style="overflow:auto"><table class="liveTable"><thead><tr><th>Name</th><th>Status</th><th>Priority</th><th>Location</th></tr></thead><tbody id="liveHorseRows"></tbody></table></div></div></div></div>';
+   document.querySelector('#operations .wrap').appendChild(panel);
+   const authArea=panel.querySelector('#authArea'),liveArea=panel.querySelector('#liveArea'),state=panel.querySelector('#staffState'),logout=panel.querySelector('#staffLogout');
+   async function refresh(){
+    const {data:{user}}=await sb.auth.getUser();
+    if(!user){authArea.hidden=false;liveArea.hidden=true;logout.hidden=true;state.textContent='Signed out';return}
+    const {data:staff,error:se}=await sb.from('staff_profiles').select('display_name,role,active').eq('user_id',user.id).maybeSingle();
+    if(se||!staff||!staff.active){state.textContent='Account is not authorized';authArea.hidden=false;liveArea.hidden=true;logout.hidden=false;return}
+    state.textContent=(staff.display_name||user.email)+' · '+staff.role;authArea.hidden=true;liveArea.hidden=false;logout.hidden=false;
+    const [{data:h},{data:t},{data:c},{data:tr}]=await Promise.all([sb.from('horses').select('id,name,status,priority,current_location').order('created_at',{ascending:false}),sb.from('tasks').select('id').is('completed_at',null),sb.from('care_events').select('id'),sb.from('transport_cases').select('id')]);
+    panel.querySelector('#liveHorses').textContent=h?.length||0;panel.querySelector('#liveTasks').textContent=t?.length||0;panel.querySelector('#liveCare').textContent=c?.length||0;panel.querySelector('#liveTransport').textContent=tr?.length||0;
+    panel.querySelector('#liveHorseRows').innerHTML=(h||[]).map(x=>'<tr><td>'+escLive(x.name)+'</td><td>'+escLive(x.status)+'</td><td>'+escLive(x.priority)+'</td><td>'+escLive(x.current_location||'—')+'</td></tr>').join('')||'<tr><td colspan="4">No live horse records.</td></tr>';
+   }
+   function escLive(v){return String(v??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+   panel.querySelector('#staffLogin').onsubmit=async e=>{e.preventDefault();const {error}=await sb.auth.signInWithPassword({email:panel.querySelector('#staffEmail').value,password:panel.querySelector('#staffPassword').value});if(error)toast(error.message);else{toast('Signed in.');refresh()}};
+   logout.onclick=async()=>{await sb.auth.signOut();refresh()};sb.auth.onAuthStateChange(()=>refresh());refresh();
+   sb.channel('rescue-live').on('postgres_changes',{event:'*',schema:'public',table:'horses'},()=>refresh()).subscribe();
+  }catch(e){console.warn('Live rescue backend unavailable',e)}
+ });
+})();
 </script></body></html>
