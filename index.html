@@ -135,4 +135,51 @@ window.initSupabaseRescue=function(){
   }catch(e){console.warn('Live rescue backend unavailable',e)}
  });
 })();
+</script><script id="full-ops-layer">
+window.addEventListener("load",()=>setTimeout(()=>{
+ const panel=document.getElementById("liveOps"); if(!panel||!window.rescueDB)return;
+ const live=panel.querySelector("#liveArea"); if(!live)return;
+ const box=document.createElement("div"); box.className="liveOpsPanel";
+ box.innerHTML=`
+ <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><h3>Rescue workspace</h3><span id="syncState" class="liveBadge">LIVE SYNC</span></div>
+ <div class="dashPanels">
+  <div><h4>New / edit horse</h4><form id="dbHorseForm">
+   <input type="hidden" id="dbHorseId"><div class="field"><label>Name</label><input id="dbName" required></div>
+   <div class="fields" style="margin-top:8px"><div class="field"><label>Status</label><select id="dbStatus"><option>urgent</option><option>intake</option><option>quarantine</option><option>evaluation</option><option>rehabilitation</option><option>adoptable</option><option>foster</option><option>sanctuary</option><option>placed</option></select></div><div class="field"><label>Priority</label><select id="dbPriority"><option>critical</option><option>high</option><option>normal</option><option>low</option></select></div></div>
+   <div class="fields" style="margin-top:8px"><div class="field"><label>Breed</label><input id="dbBreed"></div><div class="field"><label>Age</label><input id="dbAge" type="number" min="0" step=".1"></div></div>
+   <div class="fields" style="margin-top:8px"><div class="field"><label>Current location</label><input id="dbLocation"></div><div class="field"><label>Source location</label><input id="dbSource"></div></div>
+   <div class="field" style="margin-top:8px"><label>Notes</label><textarea id="dbNotes"></textarea></div>
+   <label style="display:flex;gap:8px;align-items:center;margin-top:8px"><input id="dbPublic" type="checkbox" checked style="width:auto"> Public profile</label>
+   <button class="btn light" style="margin-top:10px">Save horse</button><button class="btn small" type="button" id="dbHorseReset" style="margin-top:10px">Clear</button>
+  </form></div>
+  <div><h4>Care event</h4><form id="dbCareForm">
+   <div class="field"><label>Horse</label><select id="dbCareHorse"></select></div><div class="field" style="margin-top:8px"><label>Type</label><select id="dbCareType"><option>Veterinary</option><option>Dental</option><option>Nutrition</option><option>Medication</option><option>Farrier</option><option>Behavior / training</option><option>Transport / intake</option><option>Other</option></select></div>
+   <div class="field" style="margin-top:8px"><label>Provider</label><input id="dbProvider"></div><div class="field" style="margin-top:8px"><label>Summary</label><input id="dbSummary" required></div><div class="field" style="margin-top:8px"><label>Details</label><textarea id="dbDetails"></textarea></div><button class="btn light" style="margin-top:10px">Save care event</button>
+  </form></div>
+ </div>
+ <div style="margin-top:18px"><h4>Live task board</h4><form id="dbTaskForm" style="display:flex;gap:8px;flex-wrap:wrap"><input id="dbTaskTitle" required placeholder="Task" style="flex:1;min-width:180px"><select id="dbTaskPriority"><option>critical</option><option>high</option><option>normal</option><option>low</option></select><button class="btn light">Add task</button></form><div id="dbTasks" class="list"></div></div>
+ <div style="margin-top:18px"><h4>Horse registry</h4><div style="overflow:auto"><table class="liveTable"><thead><tr><th>Name</th><th>Status</th><th>Priority</th><th>Location</th><th>Actions</th></tr></thead><tbody id="dbHorseRows"></tbody></table></div></div>`;
+ live.appendChild(box);
+ const sb=window.rescueDB;
+ const q=sel=>panel.querySelector(sel), esc2=v=>String(v??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+ let horses=[];
+ async function refreshOps(){
+  const {data:h}=await sb.from("horses").select("*").order("created_at",{ascending:false}); horses=h||[];
+  q("#dbCareHorse").innerHTML=horses.map(h=>'<option value="'+esc2(h.id)+'">'+esc2(h.name)+'</option>').join("")||"<option value=''>No horses</option>";
+  q("#dbHorseRows").innerHTML=horses.map(h=>'<tr><td>'+esc2(h.name)+'</td><td>'+esc2(h.status)+'</td><td>'+esc2(h.priority)+'</td><td>'+esc2(h.current_location||"—")+'</td><td><button class="btn small light" data-edit-h="'+h.id+'">Edit</button> <button class="btn small" data-del-h="'+h.id+'">Delete</button></td></tr>').join("")||'<tr><td colspan="5">No live horses.</td></tr>';
+  q("#dbHorseRows").querySelectorAll("[data-edit-h]").forEach(b=>b.onclick=()=>editHorse(b.dataset.editH));
+  q("#dbHorseRows").querySelectorAll("[data-del-h]").forEach(b=>b.onclick=()=>deleteHorse(b.dataset.delH));
+  const {data:t}=await sb.from("tasks").select("*").is("completed_at",null).order("created_at",{ascending:false});
+  q("#dbTasks").innerHTML=(t||[]).map(x=>'<div class="row"><span>'+esc2(x.title)+' <small>'+esc2(x.priority)+'</small></span><button class="btn small light" data-done-t="'+x.id+'">Complete</button></div>').join("")||"<small>No open tasks.</small>";
+  q("#dbTasks").querySelectorAll("[data-done-t]").forEach(b=>b.onclick=async()=>{await sb.from("tasks").update({completed_at:new Date().toISOString()}).eq("id",b.dataset.doneT);refreshOps()});
+ }
+ function editHorse(id){const h=horses.find(x=>x.id===id);if(!h)return;q("#dbHorseId").value=h.id;q("#dbName").value=h.name;q("#dbStatus").value=h.status;q("#dbPriority").value=h.priority;q("#dbBreed").value=h.breed||"";q("#dbAge").value=h.age_years??"";q("#dbLocation").value=h.current_location||"";q("#dbSource").value=h.source_location||"";q("#dbNotes").value=h.notes||"";q("#dbPublic").checked=!!h.public_profile;q("#dbName").focus()}
+ async function deleteHorse(id){if(!confirm("Delete this horse record? This also removes its care events."))return;const r=await sb.from("horses").delete().eq("id",id);if(r.error)toast(r.error.message);else{toast("Horse deleted.");refreshOps()}}
+ q("#dbHorseForm").onsubmit=async e=>{e.preventDefault();const id=q("#dbHorseId").value;const payload={name:q("#dbName").value,status:q("#dbStatus").value,priority:q("#dbPriority").value,breed:q("#dbBreed").value||null,age_years:q("#dbAge").value?Number(q("#dbAge").value):null,current_location:q("#dbLocation").value||null,source_location:q("#dbSource").value||null,notes:q("#dbNotes").value||null,public_profile:q("#dbPublic").checked,updated_at:new Date().toISOString()};const r=id?await sb.from("horses").update(payload).eq("id",id):await sb.from("horses").insert(payload);if(r.error)toast(r.error.message);else{toast(id?"Horse updated.":"Horse added.");q("#dbHorseForm").reset();q("#dbHorseId").value="";refreshOps()}}
+ q("#dbHorseReset").onclick=()=>{q("#dbHorseForm").reset();q("#dbHorseId").value=""};
+ q("#dbCareForm").onsubmit=async e=>{e.preventDefault();const r=await sb.from("care_events").insert({horse_id:q("#dbCareHorse").value,event_type:q("#dbCareType").value,provider:q("#dbProvider").value||null,summary:q("#dbSummary").value,details:q("#dbDetails").value||null});if(r.error)toast(r.error.message);else{toast("Care event saved.");e.target.reset();refreshOps()}}
+ q("#dbTaskForm").onsubmit=async e=>{e.preventDefault();const r=await sb.from("tasks").insert({title:q("#dbTaskTitle").value,priority:q("#dbTaskPriority").value});if(r.error)toast(r.error.message);else{toast("Task added.");e.target.reset();refreshOps()}}
+ refreshOps();
+ sb.channel("rescue-ops-all").on("postgres_changes",{event:"*",schema:"public",table:"horses"},refreshOps).on("postgres_changes",{event:"*",schema:"public",table:"care_events"},refreshOps).on("postgres_changes",{event:"*",schema:"public",table:"tasks"},refreshOps).subscribe();
+},1500));
 </script></body></html>
