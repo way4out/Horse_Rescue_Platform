@@ -474,10 +474,7 @@ async function bootAuth(){
    if(sign){sign.disabled=busy;sign.textContent=busy?(mode==="create"?"Creating account…":"Signing in…"):"Sign in"}
    if(create)create.disabled=busy;if(forgot)forgot.disabled=busy;
  };
- const ensureFounder=async user=>{
-   if(!user?.email||user.email.toLowerCase()!=="way_out4@yahoo.com")return;
-   const r=await sb.rpc("ensure_tucker_founder");if(r.error)throw r.error;
- };
+ const ensureFounder=async user=>{\n   if(!user)return;\n   const r=await sb.rpc("ensure_tucker_founder");if(r.error)throw r.error;\n };
  const sync=async session=>{
    const user=session?.user;
    if(!user){set("Use any valid email address. Your account is created securely by the rescue system.",false);$id("staffSignOut").style.display="none";$id("staffCreate").style.display="inline-flex";$id("capacityJoin").style.display="none";return}
