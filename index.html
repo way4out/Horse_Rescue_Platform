@@ -50,7 +50,7 @@ body{overflow-x:hidden}.navin{position:relative}.logo{white-space:nowrap}
 @media(max-width:800px){.capacityGrid,.roleGrid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.capacityGrid,.roleGrid{grid-template-columns:1fr}.platformBar .wrap{display:block}.platformBar button{margin-top:7px}}
 </style></head>
 <body>
-<header class="nav"><div class="wrap navin"><a class="logo" href="#top">RANCH LAND <b>ANIMAL RESCUE</b></a><a class="skip" href="#main">Skip to content</a><nav class="links"><a href="#horses">Animals</a><a href="#donate">Donate</a><a href="#animals">All Animals</a><a href="#model">Care Model</a><a href="#help">Help</a><a href="#faq">FAQ</a><a href="#community">Community</a><a href="#operations">Staff</a></nav><div style="display:flex;gap:8px;align-items:center"><button class="btn small" id="openStaff" type="button">Staff</button><button class="btn dark" onclick="document.querySelector('#help')?.scrollIntoView({behavior:'smooth'})">Donate / Help</button></div></div></header>
+<header class="nav"><div class="wrap navin"><a class="logo" href="#top">RANCH LAND <b>ANIMAL RESCUE</b></a><a class="skip" href="#main">Skip to content</a><nav class="links"><a href="#horses">Animals</a><a href="#donate">Donate</a><a href="#animals">All Animals</a><a href="#model">Care Model</a><a href="#help">Help</a><a href="#faq">FAQ</a><a href="#community">Community</a><a href="#operations">Staff</a></nav><div style="display:flex;gap:8px;align-items:center"><button class="btn small" id="openStaff" type="button">Staff</button><button class="btn dark" onclick="document.querySelector('#actions')?.scrollIntoView({behavior:'smooth'})">Donate / Help</button></div></div></header>
 
 
 <div class="trustStrip" aria-label="Rescue platform capabilities"><div class="wrap trustGrid">
@@ -104,11 +104,13 @@ body{overflow-x:hidden}.navin{position:relative}.logo{white-space:nowrap}
 <section class="soft" id="help"><div class="wrap"><div class="head"><div><div class="kicker">Ways to help</div><h2>Turn compassion into a useful action.</h2></div><p>Capture the kind of help needed in the moment — from a trailer to a veterinarian to a monthly sponsor. Public requests are routed into the secure rescue intake system.</p></div><div class="grid4"><div class="card"><strong>💚 Sponsor</strong><p>Support an individual animal or a defined care need.</p></div><div class="card"><strong>🚚 Transport</strong><p>Offer hauling capacity or coordinate a route.</p></div><div class="card"><strong>🩺 Professional</strong><p>Vet, dental, farrier, feed and rehabilitation support.</p></div><div class="card"><strong>🏠 Foster / Adopt</strong><p>Start a responsible placement conversation.</p></div></div></div></section>
 
 <section class="soft" id="actions"><div class="wrap"><div class="head"><div><div class="kicker">Open participation</div><h2>Take action for an animal.</h2></div><p>Anyone can submit a rescue request, offer help, start a placement conversation, or connect a resource. Sign in when you want ongoing community participation and account-based activity.</p></div>
-<div class="grid4">
+<div class="grid3">
 <div class="card"><strong>🚨 Emergency / Report</strong><p>Report an animal needing immediate rescue, removal, evacuation or welfare response.</p><button class="btn dark actionOpen" data-action="emergency" type="button">Report / Request Response</button></div>
-<div class="card"><strong>🏠 Foster / Adopt</strong><p>Start a foster or adoption conversation for a published animal or an appropriate future placement.</p><button class="btn actionOpen" data-action="placement" type="button">Foster / Adopt</button></div>
+<div class="card"><strong>🏠 Rehome / Surrender</strong><p>Start a responsible rehoming, surrender or placement-assistance request for an animal in your care.</p><button class="btn actionOpen" data-action="rehome" type="button">Start Rehome Request</button></div>
+<div class="card"><strong>🏡 Foster / Adopt</strong><p>Start a foster or adoption conversation for a published animal or an appropriate future placement.</p><button class="btn actionOpen" data-action="placement" type="button">Foster / Adopt</button></div>
 <div class="card"><strong>💚 Sponsor / Give</strong><p>Offer sponsorship, supplies, professional services or other direct support.</p><button class="btn actionOpen" data-action="support" type="button">Offer Support</button></div>
-<div class="card"><strong>🤝 Volunteer / Partner</strong><p>Offer transport, veterinary, dental, farrier, training, feed, wildlife or other rescue capacity.</p><button class="btn actionOpen" data-action="partner" type="button">Join the Network</button></div>
+<div class="card"><strong>🚚 Transport / Field</strong><p>Offer hauling, field response, removal, evacuation or other hands-on rescue capacity.</p><button class="btn actionOpen" data-action="field" type="button">Offer Field Help</button></div>
+<div class="card"><strong>🤝 Professional / Partner</strong><p>Offer veterinary, dental, farrier, training, feed, wildlife, rescue or organizational capacity.</p><button class="btn actionOpen" data-action="partner" type="button">Join the Network</button></div>
 </div>
 <div class="card" id="actionFormCard" style="display:none;margin-top:15px"><div class="kicker">Action request</div><h3 id="actionTitle">Start a request</h3>
 <form id="actionForm"><div class="fields">
@@ -140,6 +142,9 @@ body{overflow-x:hidden}.navin{position:relative}.logo{white-space:nowrap}
 <nav class="mobile"><a href="#top">Home</a><a href="#animals">Animals</a><a href="#help">Help</a><a href="#community">Community</a><a href="#operations">Ops</a></nav>
 <div class="toast" id="toast" role="status"></div><div class="modal" id="horseModal" aria-hidden="true"><div class="modalBox"><div class="modalHead"><div><div class="kicker">Animal record · Equine</div><h2 id="modalTitle"></h2></div><button class="x" id="closeModal" aria-label="Close">×</button></div><div id="modalBody"></div></div></div>
 <script src="supabase-config.js"></script>
+<script id="frontend-integration-contract">
+window.RLAR_FRONTEND={version:"pass-1",api:"supabase",capabilities:["auth","animal-cases","removal","community","actions","placement","support","capacity","staff-ops"],publicContactRouting:false,backendOwnedIdentity:true};
+</script>
 <script id="public-rescue-core">
 (function(){
 "use strict";
@@ -239,7 +244,7 @@ document.getElementById("interestForm")?.addEventListener("submit",async e=>{
 
 // Universal public action intake
 (function universalActions(){
- const titles={emergency:"Emergency / Animal Response",placement:"Foster / Adoption Interest",support:"Sponsorship / Direct Support",partner:"Volunteer / Professional / Partner Capacity"};
+ const titles={emergency:"Emergency / Animal Response",rehome:"Rehome / Surrender Assistance",placement:"Foster / Adoption Interest",support:"Sponsorship / Direct Support",field:"Transport / Field Response",partner:"Volunteer / Professional / Partner Capacity"};
  let selected="emergency";
  const card=document.getElementById("actionFormCard"), title=document.getElementById("actionTitle");
  function open(kind,animal){
@@ -251,12 +256,14 @@ document.getElementById("interestForm")?.addEventListener("submit",async e=>{
  document.getElementById("actionCancel")?.addEventListener("click",()=>{card.style.display="none"});
  document.getElementById("actionForm")?.addEventListener("submit",async e=>{
    e.preventDefault();const sb=window.rescueDB;if(!sb){toastPublic("The rescue intake system is temporarily unavailable. Please try again.");return}
-   const btn=document.getElementById("actionSubmit"),msg=document.getElementById("actionMsg");btn.disabled=true;btn.textContent="Submitting…";
+   const btn=document.getElementById("actionSubmit"),msg=document.getElementById("actionMsg");if(btn.disabled)return;btn.disabled=true;btn.textContent="Submitting…";msg.textContent="Sending your request securely…";
    const details="Action: "+(titles[selected]||selected)+" | Animal/case: "+document.getElementById("actionAnimal").value.trim()+" | Details: "+document.getElementById("actionDetails").value.trim();
-   const r=await sb.from("help_requests").insert({name:document.getElementById("actionName").value.trim(),email:document.getElementById("actionEmail").value.trim(),phone:document.getElementById("actionPhone").value.trim()||null,request_type:titles[selected]||selected,message:details});
-   if(r.error){msg.textContent="We could not submit that request right now. Please try again.";toastPublic("Request could not be submitted.");}
-   else{e.target.reset();msg.textContent="Submitted successfully. The rescue intake system received your request.";toastPublic("Request submitted.");}
-   btn.disabled=false;btn.textContent="Submit request";
+   try{
+     const r=await sb.from("help_requests").insert({name:document.getElementById("actionName").value.trim(),email:document.getElementById("actionEmail").value.trim(),phone:document.getElementById("actionPhone").value.trim()||null,request_type:titles[selected]||selected,message:details});
+     if(r.error)throw r.error;
+     e.target.reset();msg.textContent="Submitted successfully. The rescue intake system received your request.";toastPublic("Request submitted.");
+   }catch(err){console.warn("Universal action request:",err);msg.textContent="We could not submit that request right now. Please try again.";toastPublic("Request could not be submitted.");}
+   finally{btn.disabled=false;btn.textContent="Submit request";}
  });
 })();
 if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
@@ -434,7 +441,7 @@ function closeStaff(){staff.classList.remove("open");staff.setAttribute("aria-hi
 $("#openStaff")?.addEventListener("click",openStaff);$("#platformSignIn")?.addEventListener("click",openStaff);$("#heroStaff")?.addEventListener("click",openStaff);$("#closeStaff")?.addEventListener("click",closeStaff);
 staff?.addEventListener("click",e=>{if(e.target===staff)closeStaff()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeStaff();palette?.classList.remove("open")}if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();palette?.classList.toggle("open");$("#commandInput")?.focus()}});
-const actions=[["All animals","#animals"],["Horses","#horses"],["Request animal help","#help"],["Animal removal / response","#help"],["Veterinary & dental care","#help"],["Farrier / hoof care","#help"],["Foster / adoption","#help"],["Transport","#help"],["Donate / sponsor","#donate"],["Care model","#model"],["FAQ","#faq"],["Sign in","staff"]];
+const actions=[["All animals","#animals"],["Animal directory","#horses"],["Emergency / report","#actions"],["Rehome / surrender","#actions"],["Animal removal / response","#animals"],["Veterinary / dental / farrier","#capacity"],["Foster / adoption","#actions"],["Transport / field response","#actions"],["Sponsor / give","#actions"],["Volunteer / partner","#actions"],["Community","#community"],["Care model","#model"],["FAQ","#faq"],["Sign in","staff"]];
 function renderCommands(filter=""){const box=$("#commandResults");if(!box)return;box.innerHTML=actions.filter(a=>a[0].toLowerCase().includes(filter.toLowerCase())).map(a=>'<button type="button" data-cmd="'+esc(a[1])+'">'+esc(a[0])+"</button>").join("")||"<small>No matching action.</small>";box.querySelectorAll("[data-cmd]").forEach(b=>b.onclick=()=>{palette.classList.remove("open");if(b.dataset.cmd==="staff")openStaff();else document.querySelector(b.dataset.cmd)?.scrollIntoView({behavior:"smooth"})})}
 $("#commandInput")?.addEventListener("input",e=>renderCommands(e.target.value));renderCommands();
 async function refreshImpact(){
@@ -531,7 +538,7 @@ async function bootAuth(){
 window.addEventListener("load",()=>setTimeout(()=>{bootAuth();},1800));
 })();
 </script><script id="capacity-onboarding">
-(()=>{const $=id=>document.getElementById(id);async function ensureFounder(){try{if(!window.rescueDB)return;const {data:{user}}=await rescueDB.auth.getUser();if(user&&user.email&&user.email.toLowerCase()==="way_out4@yahoo.com"){await rescueDB.rpc("ensure_tucker_founder");}}catch(e){console.warn("Founder provisioning:",e.message)}}async function refresh(){if(!window.rescueDB)return;const {data:{user}}=await rescueDB.auth.getUser();const box=$("capacityJoin");if(!box)return;if(!user){box.style.display="none";return}box.style.display="block";const {data}=await rescueDB.from("role_requests").select("requested_role,status").eq("user_id",user.id).order("created_at",{ascending:false});if(data?.length){$("capacityMsg").textContent="Requests: "+data.map(x=>x.requested_role+" ("+x.status+")").join(" · ")}}document.addEventListener("click",async e=>{if(e.target.id!=="capacitySubmit")return;const {data:{user}}=await rescueDB.auth.getUser();if(!user){$("capacityMsg").textContent="Sign in first.";return}const role=$("capacityRole").value;const {error}=await rescueDB.rpc("request_rescue_capacity",{p_role:role,p_display_name:$("capacityName").value||null,p_credentials:$("capacityCredentials").value||null,p_service_area:$("capacityArea").value||null,p_notes:$("capacityNotes").value||null});$("capacityMsg").textContent=error?error.message:"Request submitted. A rescue administrator will review it.";if(!error)refresh()});document.addEventListener("click",e=>{if(e.target.closest("#platformSignIn")||e.target.closest("#openStaff"))setTimeout(refresh,300)});window.addEventListener("load",async()=>{await ensureFounder();await refresh();if(window.rescueDB)window.rescueDB.auth.onAuthStateChange(()=>setTimeout(()=>{ensureFounder().then(refresh).catch(()=>{})},0))})})();
+(()=>{const $=id=>document.getElementById(id);async function refresh(){if(!window.rescueDB)return;const {data:{user}}=await rescueDB.auth.getUser();const box=$("capacityJoin");if(!box)return;if(!user){box.style.display="none";return}box.style.display="block";const {data}=await rescueDB.from("role_requests").select("requested_role,status").eq("user_id",user.id).order("created_at",{ascending:false});if(data?.length){$("capacityMsg").textContent="Requests: "+data.map(x=>x.requested_role+" ("+x.status+")").join(" · ")}}document.addEventListener("click",async e=>{if(e.target.id!=="capacitySubmit")return;const {data:{user}}=await rescueDB.auth.getUser();if(!user){$("capacityMsg").textContent="Sign in first.";return}const role=$("capacityRole").value;const {error}=await rescueDB.rpc("request_rescue_capacity",{p_role:role,p_display_name:$("capacityName").value||null,p_credentials:$("capacityCredentials").value||null,p_service_area:$("capacityArea").value||null,p_notes:$("capacityNotes").value||null});$("capacityMsg").textContent=error?error.message:"Request submitted. A rescue administrator will review it.";if(!error)refresh()});document.addEventListener("click",e=>{if(e.target.closest("#platformSignIn")||e.target.closest("#openStaff"))setTimeout(refresh,300)});window.addEventListener("load",async()=>{await refresh();if(window.rescueDB)window.rescueDB.auth.onAuthStateChange(()=>setTimeout(refresh,0))})})();
 </script><script id="frontend-safety">
 (function(){
 "use strict";
