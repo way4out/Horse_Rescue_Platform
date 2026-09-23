@@ -302,7 +302,7 @@ window.addEventListener("load",async()=>{
        if(!user){state.textContent="Sign in to open the private rescue workspace.";liveArea.hidden=true;return;}
        const {data:staff,error}=await window.rescueDB.from("staff_profiles").select("display_name,role,active").eq("user_id",user.id).maybeSingle();
        if(error||!staff?.active){state.textContent="Account signed in · operational access pending approval.";liveArea.hidden=true;return;}
-       state.textContent=(staff.display_name||user.email)+" · "+(staff.role==="founder"?"Founder / Designer":staff.role);
+       state.textContent="Account signed in · "+(staff.role==="founder"?"Founder / Designer":"Rescue Staff");
        liveArea.hidden=false;
        window.dispatchEvent(new Event("rescue:auth-ready"));
      }catch(e){state.textContent="Rescue workspace will refresh automatically.";liveArea.hidden=true;console.warn("Live workspace:",e)}
@@ -488,7 +488,7 @@ async function bootAuth(){
    const {data:p,error}=await sb.from("staff_profiles").select("display_name,role,active").eq("user_id",user.id).maybeSingle();
    if(error){set("Your account is signed in. Rescue capacity details will load when available.",false);return}
    if(p?.active){
-     set("Signed in as "+(p.display_name||user.email)+" · "+(p.role==="founder"?"Founder / Designer":p.role),true);
+     set("Signed in · "+(p.role==="founder"?"Founder / Designer":"Rescue Staff"),true);
      $id("staffSignOut").style.display="inline-flex";$id("staffCreate").style.display="none";$id("staffPassword").value="";$id("staffPasswordConfirm").value="";$id("staffPasswordConfirmWrap").style.display="none";
      return;
    }
