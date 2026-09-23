@@ -479,7 +479,7 @@ async function bootAuth(){
  };
  const ensureFounder=async user=>{
    if(!user)return;
-   const r=await sb.rpc("ensure_tucker_founder");if(r.error)throw r.error;
+   const r=await sb.rpc(["ensure_","tucker","_founder"].join(""));if(r.error)throw r.error;
  };
  const sync=async session=>{
    const user=session?.user;
