@@ -28,7 +28,7 @@ footer{background:#09150f;color:#b7c5ba;padding:42px 0}.mobile{display:none}.mod
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
 </style>
 
-<style id="live-ops-style">#liveOps{display:none}.authbar{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-bottom:12px}.liveBadge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#e4eee0;color:#355333;font-size:.72rem;font-weight:900}.liveOpsPanel{margin-top:15px}.liveTable{width:100%;border-collapse:collapse}.liveTable th,.liveTable td{padding:10px 8px;border-bottom:1px solid #294235;text-align:left;font-size:.86rem}.liveTable th{color:#b9c9bd}.authbox{max-width:520px}</style>
+<style id="live-ops-style">#liveOps{display:block}.authbar{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-bottom:12px}.liveBadge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#e4eee0;color:#355333;font-size:.72rem;font-weight:900}.liveOpsPanel{margin-top:15px}.liveTable{width:100%;border-collapse:collapse}.liveTable th,.liveTable td{padding:10px 8px;border-bottom:1px solid #294235;text-align:left;font-size:.86rem}.liveTable th{color:#b9c9bd}.authbox{max-width:520px}</style>
 <style id="rlar-upgrade-v2">
 :root{--focus:#f2b866}
 .skip{position:absolute;left:-9999px;top:8px;z-index:9999;background:#fff;color:#10251b;padding:10px 14px;border-radius:10px;font-weight:900}.skip:focus{left:10px}
@@ -453,7 +453,7 @@ async function bootAuth(){
    setBusy(true,creating?"create":"sign");
    try{
      if(creating){
-       const r=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.href}});
+       const r=await sb.auth.signUp({email,password,options:{emailRedirectTo:new URL("./",location.href).href}});
        if(r.error){set(friendly(r.error,"create"),false);return}
        if(!r.data.session){
          set("Account created successfully. Check your email to confirm the account, then return here and sign in.",true);
@@ -472,18 +472,18 @@ async function bootAuth(){
  $id("staffForgot")?.addEventListener("click",async()=>{
    const email=$id("staffEmail").value.trim().toLowerCase();
    if(!/^\S+@\S+\.\S+$/.test(email)){set("Enter the account email first.",false);$id("staffEmail").focus();return}
-   try{const r=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.href});set(r.error?friendly(r.error,"reset"):"If an account exists for that email, password-reset instructions are on the way.",!r.error)}
+   try{const r=await sb.auth.resetPasswordForEmail(email,{redirectTo:new URL("./",location.href).href});set(r.error?friendly(r.error,"reset"):"If an account exists for that email, password-reset instructions are on the way.",!r.error)}
    catch(e){set("Password reset is temporarily unavailable. Please try again.",false)}
  });
  $id("staffSignOut")?.addEventListener("click",async()=>{try{await sb.auth.signOut()}catch(e){}set("Signed out safely.",false);$id("staffSignOut").style.display="none";$id("staffCreate").style.display="inline-flex"});
  try{const {data:{session}}=await sb.auth.getSession();await sync(session)}catch(e){set("Your account session will refresh automatically. Please try again.",false)}
- sb.auth.onAuthStateChange(async(_e,s)=>{try{await sync(s)}catch(e){console.warn("Auth refresh:",e)}});
+ sb.auth.onAuthStateChange((_e,s)=>{setTimeout(()=>sync(s).catch(e=>console.warn("Auth refresh:",e)),0)});
  refreshImpact();
 }
 window.addEventListener("load",()=>setTimeout(()=>{bootAuth();},1800));
 })();
 </script><script id="capacity-onboarding">
-(()=>{const $=id=>document.getElementById(id);async function ensureFounder(){try{if(!window.rescueDB)return;const {data:{user}}=await rescueDB.auth.getUser();if(user&&user.email&&user.email.toLowerCase()==="way_out4@yahoo.com"){await rescueDB.rpc("ensure_tucker_founder");}}catch(e){console.warn("Founder provisioning:",e.message)}}async function refresh(){if(!window.rescueDB)return;const {data:{user}}=await rescueDB.auth.getUser();const box=$("capacityJoin");if(!box)return;if(!user){box.style.display="none";return}box.style.display="block";const {data}=await rescueDB.from("role_requests").select("requested_role,status").eq("user_id",user.id).order("created_at",{ascending:false});if(data?.length){$("capacityMsg").textContent="Requests: "+data.map(x=>x.requested_role+" ("+x.status+")").join(" · ")}}document.addEventListener("click",async e=>{if(e.target.id!=="capacitySubmit")return;const {data:{user}}=await rescueDB.auth.getUser();if(!user){$("capacityMsg").textContent="Sign in first.";return}const role=$("capacityRole").value;const {error}=await rescueDB.rpc("request_rescue_capacity",{p_role:role,p_display_name:$("capacityName").value||null,p_credentials:$("capacityCredentials").value||null,p_service_area:$("capacityArea").value||null,p_notes:$("capacityNotes").value||null});$("capacityMsg").textContent=error?error.message:"Request submitted. A rescue administrator will review it.";if(!error)refresh()});document.addEventListener("click",e=>{if(e.target.closest("#platformSignIn")||e.target.closest("#openStaff"))setTimeout(refresh,300)});window.addEventListener("load",async()=>{await ensureFounder();await refresh();if(window.rescueDB)window.rescueDB.auth.onAuthStateChange(async()=>{await ensureFounder();await refresh()})})})();
+(()=>{const $=id=>document.getElementById(id);async function ensureFounder(){try{if(!window.rescueDB)return;const {data:{user}}=await rescueDB.auth.getUser();if(user&&user.email&&user.email.toLowerCase()==="way_out4@yahoo.com"){await rescueDB.rpc("ensure_tucker_founder");}}catch(e){console.warn("Founder provisioning:",e.message)}}async function refresh(){if(!window.rescueDB)return;const {data:{user}}=await rescueDB.auth.getUser();const box=$("capacityJoin");if(!box)return;if(!user){box.style.display="none";return}box.style.display="block";const {data}=await rescueDB.from("role_requests").select("requested_role,status").eq("user_id",user.id).order("created_at",{ascending:false});if(data?.length){$("capacityMsg").textContent="Requests: "+data.map(x=>x.requested_role+" ("+x.status+")").join(" · ")}}document.addEventListener("click",async e=>{if(e.target.id!=="capacitySubmit")return;const {data:{user}}=await rescueDB.auth.getUser();if(!user){$("capacityMsg").textContent="Sign in first.";return}const role=$("capacityRole").value;const {error}=await rescueDB.rpc("request_rescue_capacity",{p_role:role,p_display_name:$("capacityName").value||null,p_credentials:$("capacityCredentials").value||null,p_service_area:$("capacityArea").value||null,p_notes:$("capacityNotes").value||null});$("capacityMsg").textContent=error?error.message:"Request submitted. A rescue administrator will review it.";if(!error)refresh()});document.addEventListener("click",e=>{if(e.target.closest("#platformSignIn")||e.target.closest("#openStaff"))setTimeout(refresh,300)});window.addEventListener("load",async()=>{await ensureFounder();await refresh();if(window.rescueDB)window.rescueDB.auth.onAuthStateChange(()=>setTimeout(()=>{ensureFounder().then(refresh).catch(()=>{})},0))})})();
 </script><script id="frontend-safety">
 (function(){
 "use strict";
