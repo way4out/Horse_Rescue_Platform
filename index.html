@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#10251b"><meta name="description" content="Ranch Land Animal Rescue in Williams, Arizona — rescue, transport, stabilize, rehabilitate, foster, adopt and provide sanctuary for horses.">
+<meta name="theme-color" content="#10251b"><meta name="description" content="Ranch Land Animal Rescue in Williams, Arizona — all-animal rescue, response, rehabilitation, foster, adoption, sanctuary and lifelong care.">
 <meta name="robots" content="index,follow"><meta name="application-name" content="Ranch Land Animal Rescue">
-<meta property="og:title" content="Ranch Land Animal Rescue — Every Horse Deserves a Future">
+<meta property="og:title" content="Ranch Land Animal Rescue — All-Animal Rescue & Care">
 <meta property="og:description" content="An all-animal rescue platform for intake, response, removal, care, rehabilitation, fostering, adoption, sanctuary, transport and lifelong records.">
 <meta property="og:type" content="website"><meta property="og:url" content="https://way4out.github.io/Ranch-Land-Animal-Rescue/">
 <meta name="twitter:card" content="summary_large_image">
@@ -77,7 +77,7 @@ body{overflow-x:hidden}.navin{position:relative}.logo{white-space:nowrap}
 <div class="accountStatus"><i class="accountDot" id="capacityDot"></i><span id="capacityMsg">Choose a capacity to request access.</span></div>
 </div></div></div>
 <div class="commandPalette" id="commandPalette" aria-hidden="true"><div class="commandBox"><input id="commandInput" placeholder="Search rescue actions… (Esc to close)" autocomplete="off"><div class="commandResults" id="commandResults"></div></div></div><div class="platformBar"><div class="wrap"><span><strong>Ranch Land Animal Rescue</strong> · All-animal care, response, rehabilitation and placement</span><button class="btn small" id="platformSignIn" type="button">Sign in / Join</button></div></div><main id="main" tabindex="-1">
-<section class="hero"><div class="wrap" style="margin-bottom:18px"><div class="notice" style="background:#ffffff14;color:#fff;border-color:#ffffff24">Welcome. You can browse without signing in. No account is required to learn, help, donate, request animal assistance, or return later.</div></div><div class="wrap heroGrid"><div><div class="eyebrow">All-Animal Rescue · Care · Response · Sanctuary</div><h1>Every horse deserves a future.</h1><p>A unified rescue command center for horses and all animals: intake, emergency response, removal, transport, veterinary and dental care, farrier services, rehabilitation, fostering, adoption, sanctuary, sponsorship, partner coordination and lifelong records.</p><div class="actions"><a class="btn light" href="#animals">Explore All Animals →</a><a class="btn" style="color:#fff;border-color:#ffffff55" href="#contact">Get Involved</a></div></div><aside class="heroPanel"><div class="eyebrow">Current emergency mission</div><h2>All animals</h2><p>All species · all care pathways</p><div class="stats"><div class="stat"><strong>24/7</strong><small>Care mindset</small></div><div class="stat"><strong>3+</strong><small>Placement pathways</small></div><div class="stat"><strong>1</strong><small>Unified case record</small></div><div class="stat"><strong>∞</strong><small>Horses worth helping</small></div></div></aside></div></section>
+<section class="hero"><div class="wrap" style="margin-bottom:18px"><div class="notice" style="background:#ffffff14;color:#fff;border-color:#ffffff24">Welcome. You can browse without signing in. No account is required to learn, help, donate, request animal assistance, or return later.</div></div><div class="wrap heroGrid"><div><div class="eyebrow">All-Animal Rescue · Care · Response · Sanctuary</div><h1>Every animal deserves a way forward.</h1><p>A unified rescue command center for horses and all animals: intake, emergency response, removal, transport, veterinary and dental care, farrier services, rehabilitation, fostering, adoption, sanctuary, sponsorship, partner coordination and lifelong records.</p><div class="actions"><a class="btn light" href="#animals">Explore All Animals →</a><a class="btn" style="color:#fff;border-color:#ffffff55" href="#contact">Get Involved</a></div></div><aside class="heroPanel"><div class="eyebrow">All-Animal Rescue Network</div><h2>All animals</h2><p>All species · all care pathways</p><div class="stats"><div class="stat"><strong>24/7</strong><small>Care mindset</small></div><div class="stat"><strong>3+</strong><small>Placement pathways</small></div><div class="stat"><strong>1</strong><small>Unified case record</small></div><div class="stat"><strong>∞</strong><small>Animals worth helping</small></div></div></aside></div></section>
 
 
 <section class="soft" id="impact"><div class="wrap"><div class="head"><div><div class="kicker">Live rescue picture</div><h2>One system. The whole mission.</h2></div><p>Public information stays simple while staff tools provide the deeper operational record behind each animal.</p></div>
@@ -364,18 +364,36 @@ async function refreshImpact(){
 async function bootAuth(){
  const sb=window.rescueDB;if(!sb)return;
  const set=(msg,on)=>{$("#staffAuthMsg").textContent=msg;$("#staffDot").classList.toggle("on",!!on);};
+ const ensureFounder=async(user)=>{
+   if(!user?.email||user.email.toLowerCase()!=="way_out4@yahoo.com")return null;
+   const r=await sb.rpc("ensure_tucker_founder");
+   if(r.error)throw r.error;
+   return r.data;
+ };
  const sync=async(session)=>{
    const user=session?.user;
-   if(!user){set("Not signed in.",false);$("#staffSignOut").style.display="none";return}
-   const {data:p}=await sb.from("staff_profiles").select("display_name,role,active").eq("user_id",user.id).maybeSingle();
-   if(p?.active){set("Signed in as "+(p.display_name||user.email)+" · "+p.role,true);$("#staffSignOut").style.display="inline-flex";$("#staffCreate").style.display="none";$("#staffPassword").value="";return}
-   set("Authenticated, but no active staff role is attached to this account.",false);
+   if(!user){set("Not signed in.",false);$("#staffSignOut").style.display="none";$("#staffCreate").style.display="inline-flex";return}
+   try{
+     await ensureFounder(user);
+   }catch(e){
+     console.warn("Founder provisioning:",e.message);
+   }
+   const {data:p,error}=await sb.from("staff_profiles").select("display_name,role,active").eq("user_id",user.id).maybeSingle();
+   if(error){set("Account signed in, but staff access could not be loaded. Please refresh.",false);return}
+   if(p?.active){
+     const label=p.role==="founder"?"Founder · Designer":(p.display_name||user.email)+" · "+p.role;
+     set("Signed in as "+(p.display_name||user.email)+" · "+(p.role==="founder"?"Founder / Designer":p.role),true);
+     $("#staffSignOut").style.display="inline-flex";$("#staffCreate").style.display="none";$("#staffPassword").value="";
+     return;
+   }
+   set("Account signed in. No rescue capacity is attached yet.",false);
  };
  $("#staffAuthForm")?.addEventListener("submit",async e=>{e.preventDefault();set("Signing in…",false);const r=await sb.auth.signInWithPassword({email:$("#staffEmail").value.trim(),password:$("#staffPassword").value});if(r.error){set(r.error.message,false);return}await sync(r.data.session);toast2("Signed in.");});
  $("#staffCreate")?.addEventListener("click",async()=>{set("Creating account…",false);const r=await sb.auth.signUp({email:$("#staffEmail").value.trim(),password:$("#staffPassword").value});if(r.error){set(r.error.message,false);return}if(!r.data.session){set("Account created. Check your email to verify it, then sign in.",false)}else await sync(r.data.session)});
  $("#staffForgot")?.addEventListener("click",async()=>{const email=$("#staffEmail").value.trim();if(!email){set("Enter your email first.",false);return}const r=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});set(r.error?r.error.message:"Password-reset email sent.",!r.error)});
  $("#staffSignOut")?.addEventListener("click",async()=>{await sb.auth.signOut();set("Signed out.",false);$("#staffSignOut").style.display="none";$("#staffCreate").style.display="inline-flex"});
- const {data:{session}}=await sb.auth.getSession();await sync(session);sb.auth.onAuthStateChange((_e,s)=>sync(s));
+ const {data:{session}}=await sb.auth.getSession();await sync(session);
+ sb.auth.onAuthStateChange(async(_e,s)=>{await sync(s)});
  refreshImpact();
 }
 window.addEventListener("load",()=>setTimeout(()=>{bootAuth();},1800));
@@ -386,5 +404,5 @@ window.addEventListener("load",()=>{
  cards.forEach(card=>{if(/demo records?/i.test(card.textContent)){card.querySelectorAll("*").forEach(x=>{if(/demo records?/i.test(x.textContent)&&x.children.length===0)x.textContent="";});}});
 });
 </script><script id="capacity-onboarding">
-(()=>{const $=id=>document.getElementById(id);async function ensureFounder(){try{if(!window.rescueDB)return;const {data:{user}}=await rescueDB.auth.getUser();if(user&&user.email&&user.email.toLowerCase()==="way_out4@yahoo.com"){await rescueDB.rpc("ensure_tucker_founder");}}catch(e){console.warn("Founder provisioning:",e.message)}}async function refresh(){if(!window.rescueDB)return;const {data:{user}}=await rescueDB.auth.getUser();const box=$("capacityJoin");if(!box)return;if(!user){box.style.display="none";return}box.style.display="block";const {data}=await rescueDB.from("role_requests").select("requested_role,status").eq("user_id",user.id).order("created_at",{ascending:false});if(data?.length){$("capacityMsg").textContent="Requests: "+data.map(x=>x.requested_role+" ("+x.status+")").join(" · ")}}document.addEventListener("click",async e=>{if(e.target.id!=="capacitySubmit")return;const {data:{user}}=await rescueDB.auth.getUser();if(!user){$("capacityMsg").textContent="Sign in first.";return}const role=$("capacityRole").value;const {error}=await rescueDB.rpc("request_rescue_capacity",{p_role:role,p_display_name:$("capacityName").value||null,p_credentials:$("capacityCredentials").value||null,p_service_area:$("capacityArea").value||null,p_notes:$("capacityNotes").value||null});$("capacityMsg").textContent=error?error.message:"Request submitted. A rescue administrator will review it.";if(!error)refresh()});document.addEventListener("click",e=>{if(e.target.closest("#platformSignIn")||e.target.closest("#openStaff"))setTimeout(refresh,300)});window.addEventListener("load",async()=>{await ensureFounder();await refresh()})})();
+(()=>{const $=id=>document.getElementById(id);async function ensureFounder(){try{if(!window.rescueDB)return;const {data:{user}}=await rescueDB.auth.getUser();if(user&&user.email&&user.email.toLowerCase()==="way_out4@yahoo.com"){await rescueDB.rpc("ensure_tucker_founder");}}catch(e){console.warn("Founder provisioning:",e.message)}}async function refresh(){if(!window.rescueDB)return;const {data:{user}}=await rescueDB.auth.getUser();const box=$("capacityJoin");if(!box)return;if(!user){box.style.display="none";return}box.style.display="block";const {data}=await rescueDB.from("role_requests").select("requested_role,status").eq("user_id",user.id).order("created_at",{ascending:false});if(data?.length){$("capacityMsg").textContent="Requests: "+data.map(x=>x.requested_role+" ("+x.status+")").join(" · ")}}document.addEventListener("click",async e=>{if(e.target.id!=="capacitySubmit")return;const {data:{user}}=await rescueDB.auth.getUser();if(!user){$("capacityMsg").textContent="Sign in first.";return}const role=$("capacityRole").value;const {error}=await rescueDB.rpc("request_rescue_capacity",{p_role:role,p_display_name:$("capacityName").value||null,p_credentials:$("capacityCredentials").value||null,p_service_area:$("capacityArea").value||null,p_notes:$("capacityNotes").value||null});$("capacityMsg").textContent=error?error.message:"Request submitted. A rescue administrator will review it.";if(!error)refresh()});document.addEventListener("click",e=>{if(e.target.closest("#platformSignIn")||e.target.closest("#openStaff"))setTimeout(refresh,300)});window.addEventListener("load",async()=>{await ensureFounder();await refresh();if(window.rescueDB)window.rescueDB.auth.onAuthStateChange(async()=>{await ensureFounder();await refresh()})})})();
 </script></body></html>
