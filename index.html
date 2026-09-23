@@ -103,6 +103,21 @@ body{overflow-x:hidden}.navin{position:relative}.logo{white-space:nowrap}
 
 <section class="soft" id="help"><div class="wrap"><div class="head"><div><div class="kicker">Ways to help</div><h2>Turn compassion into a useful action.</h2></div><p>Capture the kind of help needed in the moment — from a trailer to a veterinarian to a monthly sponsor. Public requests are routed into the secure rescue intake system.</p></div><div class="grid4"><div class="card"><strong>💚 Sponsor</strong><p>Support an individual animal or a defined care need.</p></div><div class="card"><strong>🚚 Transport</strong><p>Offer hauling capacity or coordinate a route.</p></div><div class="card"><strong>🩺 Professional</strong><p>Vet, dental, farrier, feed and rehabilitation support.</p></div><div class="card"><strong>🏠 Foster / Adopt</strong><p>Start a responsible placement conversation.</p></div></div></div></section>
 
+<section class="soft" id="actions"><div class="wrap"><div class="head"><div><div class="kicker">Open participation</div><h2>Take action for an animal.</h2></div><p>Anyone can submit a rescue request, offer help, start a placement conversation, or connect a resource. Sign in when you want ongoing community participation and account-based activity.</p></div>
+<div class="grid4">
+<div class="card"><strong>🚨 Emergency / Report</strong><p>Report an animal needing immediate rescue, removal, evacuation or welfare response.</p><button class="btn dark actionOpen" data-action="emergency" type="button">Report / Request Response</button></div>
+<div class="card"><strong>🏠 Foster / Adopt</strong><p>Start a foster or adoption conversation for a published animal or an appropriate future placement.</p><button class="btn actionOpen" data-action="placement" type="button">Foster / Adopt</button></div>
+<div class="card"><strong>💚 Sponsor / Give</strong><p>Offer sponsorship, supplies, professional services or other direct support.</p><button class="btn actionOpen" data-action="support" type="button">Offer Support</button></div>
+<div class="card"><strong>🤝 Volunteer / Partner</strong><p>Offer transport, veterinary, dental, farrier, training, feed, wildlife or other rescue capacity.</p><button class="btn actionOpen" data-action="partner" type="button">Join the Network</button></div>
+</div>
+<div class="card" id="actionFormCard" style="display:none;margin-top:15px"><div class="kicker">Action request</div><h3 id="actionTitle">Start a request</h3>
+<form id="actionForm"><div class="fields">
+<div class="field"><label for="actionName">Name</label><input id="actionName" autocomplete="name" required></div>
+<div class="field"><label for="actionEmail">Email</label><input id="actionEmail" type="email" autocomplete="email" required></div>
+<div class="field"><label for="actionPhone">Phone (optional)</label><input id="actionPhone" inputmode="tel"></div>
+<div class="field"><label for="actionAnimal">Animal / case (optional)</label><input id="actionAnimal" placeholder="Name or brief description"></div>
+<div class="field full"><label for="actionDetails">Details</label><textarea id="actionDetails" rows="5" maxlength="10000" required placeholder="Tell the rescue network what you need or what you can provide."></textarea></div>
+</div><div class="actions"><button class="btn dark" type="submit" id="actionSubmit">Submit request</button><button class="btn" type="button" id="actionCancel">Cancel</button></div><div class="accountStatus"><i class="accountDot" id="actionDot"></i><span id="actionMsg" aria-live="polite">Your request will be routed into rescue intake.</span></div></form></div></div></section>
 <section class="darkSection" id="donate"><div class="wrap"><div class="head"><div><div class="kicker">One-tap giving</div><h2>Help save animals now.</h2></div><p>One general rescue donation supports the organization’s charitable mission across horses, companion animals, farm animals, exotics and emergency response. Internal financial allocations, balances, budgets and disbursement records are not public information and remain restricted to authorized organizational staff.</p></div><div class="grid4"><div class="card"><div class="kicker">PROGRAM</div><h3>Rescue Operations</h3><p>Public giving supports the organization-wide charitable mission. Internal allocations and financial records are private staff information.</p></div><div class="card"><div class="kicker">CARE</div><h3>Emergency & Recovery</h3><p>Transport, veterinary care, feed, rehabilitation, foster, adoption and sanctuary support.</p></div><div class="card"><div class="kicker">NETWORK</div><h3>Response Capacity</h3><p>Professional partners, emergency response, animal removal and cross-species rescue coordination.</p></div><div class="card"><div class="kicker">GOVERNANCE</div><h3>Organizational Stewardship</h3><p>Internal financial controls, approvals and records are restricted to authorized organizational staff.</p></div></div><div class="card" style="margin-top:15px;text-align:center"><h3>Give online</h3><p>Donate securely through our connected nonprofit giving provider. Card, ACH and supported digital-wallet options can be offered without exposing payment credentials to this website.</p><a class="btn rust" id="liveDonateBtn" href="#" target="_blank" rel="noopener">Give now</a><div class="notice" id="donationStatus">Secure giving is being connected. No payment is accepted until the organization activates and verifies its giving account.</div></div><div class="card" style="margin-top:15px;text-align:center"><p>Public privacy boundary: donor/payment records, internal budgets, balances, allocations, approvals and disbursements are restricted to authorized organizational staff. Charitable funds remain under the legal control of the qualified organization.</p></div></div></section>
 <section id="animals"><div class="wrap"><div class="head"><div><div class="kicker">Whole-animal rescue network</div><h2>Whole-animal rescue.</h2></div><p>The platform now has capacity to track dogs, cats, companion birds, farm animals and exotics — including reptiles, fish, mammals and wildlife — plus animal-removal cases and a shared partner network.</p></div><div class="grid4"><div class="card"><strong>🐶 Dogs & Cats</strong><p>Intake, foster, adoption, medical and placement coordination.</p></div><div class="card"><strong>🦜 Birds</strong><p>Pet birds, avian care, transport, foster and specialist referrals.</p></div><div class="card"><strong>🐄 Farm</strong><p>Cattle, goats, sheep, pigs, poultry and other farm-animal cases.</p></div><div class="card"><strong>🦎 Exotics & Wildlife</strong><p>Reptiles, fish, mammals and wildlife referrals with species-appropriate partners.</p></div></div><div class="grid3" style="margin-top:15px"><div class="card"><div class="kicker">REMOVAL</div><h3>Animal removal coordination</h3><p>Stray, abandoned, injured, nuisance, evacuation, wildlife and other removal requests can be triaged and routed to appropriate responders.</p><form id="removalForm"><div class="field"><label>Name</label><input id="rmName" required></div><div class="field" style="margin-top:8px"><label>Contact</label><input id="rmContact" required placeholder="Phone or email"></div><div class="field" style="margin-top:8px"><label>Location</label><input id="rmLocation" required></div><div class="field" style="margin-top:8px"><label>Animal / situation</label><input id="rmAnimal" required placeholder="Species and what is happening"></div><div class="field" style="margin-top:8px"><label>Urgency</label><select id="rmUrgency"><option>critical</option><option>high</option><option>normal</option><option>low</option></select></div><button class="btn dark" type="submit" style="margin-top:10px">Request Help / Removal</button><div class="notice" id="rmNotice" hidden>Request submitted for rescue-network triage.</div></form></div><div class="card"><div class="kicker">PARTNER NETWORK</div><h3>Build the response web.</h3><p>Connect shelters, rescues, animal control, wildlife responders, veterinarians, dentists, farriers, trainers, transporters, feed suppliers, boarding facilities, fosters, adopters and sanctuaries.</p><div class="progress" style="margin-top:18px"><i style="width:100%"></i></div><p><strong>One network. Many species. Appropriate referral for each case.</strong></p></div><div class="card"><div class="kicker">LIVE PUBLIC CASES</div><h3>Published animal cases</h3><div id="animalCaseGrid"><p>Loading published cases…</p></div></div></div></div></section>
 
@@ -154,6 +169,7 @@ function renderAnimals(){
      '<h3>'+esc(a.name||"Unnamed animal")+'</h3>'+
      '<p>'+esc(a.species||a.species_class||"Animal")+(a.breed_or_type?" · "+esc(a.breed_or_type):"")+'</p>'+
      (a.notes?'<p>'+esc(a.notes)+'</p>':"")+
+     '<div class="actions" style="margin-top:10px"><button class="btn small actionOpen" data-action="placement" data-animal="'+esc(a.name||"Unnamed animal")+'" type="button">Foster / Adopt</button><button class="btn small actionOpen" data-action="support" data-animal="'+esc(a.name||"Unnamed animal")+'" type="button">Sponsor / Help</button></div>'+
      '</div></article>';
  }).join("") : '<div class="emptyState" style="grid-column:1/-1"><strong>No published animal records match.</strong><span>Try another filter or search term.</span></div>';
 }
@@ -220,7 +236,30 @@ document.getElementById("interestForm")?.addEventListener("submit",async e=>{
  finally{if(btn){btn.disabled=false;btn.textContent="Send Request";}}
 });
 
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+
+// Universal public action intake
+(function universalActions(){
+ const titles={emergency:"Emergency / Animal Response",placement:"Foster / Adoption Interest",support:"Sponsorship / Direct Support",partner:"Volunteer / Professional / Partner Capacity"};
+ let selected="emergency";
+ const card=document.getElementById("actionFormCard"), title=document.getElementById("actionTitle");
+ function open(kind,animal){
+   selected=kind; if(title)title.textContent=titles[kind]||"Rescue Request";
+   if(animal)document.getElementById("actionAnimal").value=animal;
+   if(card){card.style.display="block";card.scrollIntoView({behavior:"smooth",block:"center"});}
+ }
+ document.querySelectorAll(".actionOpen").forEach(b=>b.addEventListener("click",()=>open(b.dataset.action,b.dataset.animal||"")));
+ document.getElementById("actionCancel")?.addEventListener("click",()=>{card.style.display="none"});
+ document.getElementById("actionForm")?.addEventListener("submit",async e=>{
+   e.preventDefault();const sb=window.rescueDB;if(!sb){toastPublic("The rescue intake system is temporarily unavailable. Please try again.");return}
+   const btn=document.getElementById("actionSubmit"),msg=document.getElementById("actionMsg");btn.disabled=true;btn.textContent="Submitting…";
+   const details="Action: "+(titles[selected]||selected)+" | Animal/case: "+document.getElementById("actionAnimal").value.trim()+" | Details: "+document.getElementById("actionDetails").value.trim();
+   const r=await sb.from("help_requests").insert({name:document.getElementById("actionName").value.trim(),email:document.getElementById("actionEmail").value.trim(),phone:document.getElementById("actionPhone").value.trim()||null,request_type:titles[selected]||selected,message:details});
+   if(r.error){msg.textContent="We could not submit that request right now. Please try again.";toastPublic("Request could not be submitted.");}
+   else{e.target.reset();msg.textContent="Submitted successfully. The rescue intake system received your request.";toastPublic("Request submitted.");}
+   btn.disabled=false;btn.textContent="Submit request";
+ });
+})();
+\nif("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 window.addEventListener("load",()=>setTimeout(loadAnimalCases,1200));
 window.addEventListener("rescue:auth-ready",loadAnimalCases);
 })();
