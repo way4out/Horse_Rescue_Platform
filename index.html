@@ -61,7 +61,7 @@ body{overflow-x:hidden}.navin{position:relative}.logo{white-space:nowrap}
 </div></div>
 <div class="staffAccess" id="staffAccess" aria-hidden="true"><div class="staffBox">
 <button class="closeStaff" id="closeStaff" aria-label="Close">×</button><div class="kicker">Secure staff access</div><h2>Rescue Command Center</h2><p>Sign in with your rescue account. Your role determines the tools and records available to you.</p>
-<form id="staffAuthForm"><div class="fields"><div class="field full"><label for="staffEmail">Email</label><input id="staffEmail" type="email" autocomplete="email" required></div><div class="field full"><label for="staffPassword">Password</label><input id="staffPassword" type="password" autocomplete="current-password" minlength="8" required></div></div><div class="actions"><button class="btn dark" type="submit">Sign in</button><button class="btn" type="button" id="staffCreate">Create account</button></div><div class="accountStatus"><i class="accountDot" id="staffDot"></i><span id="staffAuthMsg">Use the email assigned to your rescue role.</span></div></form>
+<form id="staffAuthForm" novalidate><div class="fields"><div class="field full"><label for="staffEmail">Email</label><input id="staffEmail" type="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" required></div><div class="field full"><label for="staffPassword">Password</label><input id="staffPassword" type="password" autocomplete="new-password" minlength="8" required></div><div class="field full" id="staffPasswordConfirmWrap" style="display:none"><label for="staffPasswordConfirm">Confirm password</label><input id="staffPasswordConfirm" type="password" autocomplete="new-password" minlength="8"></div></div><div class="actions"><button class="btn dark" type="submit" id="staffSignIn">Sign in</button><button class="btn" type="button" id="staffCreate">Create account</button></div><div class="accountStatus" aria-live="polite"><i class="accountDot" id="staffDot"></i><span id="staffAuthMsg">Use any valid email address. Your account is created securely by the rescue system.</span></div></form>
 <div class="actions"><button class="btn small" id="staffForgot" type="button">Send password-reset email</button><button class="btn small" id="staffSignOut" type="button" style="display:none">Sign out</button></div>
 <div id="capacityJoin" style="margin-top:18px;padding-top:18px;border-top:1px solid var(--line);display:none">
 <div class="kicker">Join a rescue capacity</div><h3 style="margin:.3rem 0">Tell us how you participate</h3>
@@ -82,7 +82,7 @@ body{overflow-x:hidden}.navin{position:relative}.logo{white-space:nowrap}
 
 <section class="soft" id="impact"><div class="wrap"><div class="head"><div><div class="kicker">Live rescue picture</div><h2>One system. The whole mission.</h2></div><p>Public information stays simple while staff tools provide the deeper operational record behind each animal.</p></div>
 <div class="impactGrid">
-<div class="impactCard"><strong id="impactHorses">—</strong><span>Horse records</span></div>
+<div class="impactCard"><strong id="impactHorses">—</strong><span>Equine records</span></div>
 <div class="impactCard"><strong id="impactAnimals">—</strong><span>All-animal cases</span></div>
 <div class="impactCard"><strong id="impactTasks">—</strong><span>Open care tasks</span></div>
 <div class="impactCard"><strong id="impactViews">—</strong><span>Public page views</span></div>
@@ -110,21 +110,16 @@ body{overflow-x:hidden}.navin{position:relative}.logo{white-space:nowrap}
 
 <section id="contact"><div class="wrap"><div class="head"><div><div class="kicker">Direct contact</div><h2>Reach Tucker directly.</h2></div><p>For now, all public contact is centralized with Tucker Martin. No other public contact person is listed on this site.</p></div><div class="grid3" style="margin-bottom:15px"><div class="card"><div class="kicker">PHONE</div><h3><a href="tel:+16237645641">(623) 764-5641</a></h3><p>Direct rescue contact.</p></div><div class="card"><div class="kicker">EMAIL</div><h3 style="overflow-wrap:anywhere"><a href="mailto:way_out4@yahoo.com">way_out4@yahoo.com</a></h3><p>Direct email contact.</p></div><div class="card"><div class="kicker">X</div><h3><a href="https://x.com/4out_og" target="_blank" rel="noopener">@4out_og</a></h3><p>Public social contact.</p></div></div><div class="card" style="margin-bottom:15px"><strong>One contact point for now.</strong><p style="margin-bottom:0">Website help, animal-removal and partnership requests are recorded in the secure rescue intake system when the live backend is available. For a direct response from Tucker, use the phone or email above.</p></div><div class="warning">Do not enter sensitive veterinary, financial, identity or adopter information into this public form until a secure backend is connected.</div><form class="form" id="interestForm"><div class="fields"><div class="field"><label for="name">Name</label><input id="name" required autocomplete="name" placeholder="Your name"></div><div class="field"><label for="email">Email</label><input id="email" type="email" required autocomplete="email" placeholder="you@example.com"></div><div class="field"><label for="phone">Phone (optional)</label><input id="phone" autocomplete="tel" placeholder="Phone number"></div><div class="field"><label for="interest">How can you help?</label><select id="interest"><option>Sponsorship</option><option>Adoption</option><option>Foster</option><option>Volunteering</option><option>Transportation support</option><option>Veterinary / dental / farrier</option><option>Feed / supplies</option><option>Professional partnership</option><option>Other</option></select></div><div class="field full"><label for="message">Message</label><textarea id="message" placeholder="What would you like to help with?"></textarea></div></div><button class="btn dark" type="submit" style="margin-top:15px">Send Request</button><div class="notice" id="contactNotice" hidden>Thank you. Your request has been securely submitted to the rescue intake system.</div></form></div></section>
 
-<section class="dashboard" id="operations"><div class="wrap"><div class="head"><div><div class="kicker">Staff operations</div><h2>Rescue work, connected.</h2></div><p>Authorized staff use the secure live workspace below. Public visitors never receive access to private horse-care records.</p></div><div class="dashGrid"><div class="dashStat"><strong id="countHorses">0</strong><span>Local demo records</span></div><div class="dashStat"><strong id="countInterests">0</strong><span>Help requests</span></div><div class="dashStat"><strong id="countCare">0</strong><span>Care events</span></div><div class="dashStat"><strong id="countTasks">0</strong><span>Open tasks</span></div></div><div id="prototypeTools" class="dashPanels"><div class="dashPanel"><h3>⚡ Local demo workspace</h3><form id="horseForm"><div class="field"><label>Name / temporary ID</label><input id="horseName" required placeholder="Example: UT-001"></div><div class="fields" style="margin-top:10px"><div class="field"><label>Status</label><select id="horseTier"><option value="urgent">Urgent</option><option value="evaluation">Evaluation</option><option value="adoptable">Adoptable</option><option value="sanctuary">Sanctuary</option></select></div><div class="field"><label>Age / estimate</label><input id="horseAge" placeholder="Unknown"></div></div><div class="field" style="margin-top:10px"><label>Breed / type</label><input id="horseBreed" placeholder="Unknown"></div><div class="field" style="margin-top:10px"><label>Initial notes</label><textarea id="horseNotes" placeholder="Source, condition, immediate needs, transport notes…"></textarea></div><button class="btn light" type="submit" style="margin-top:10px">Add Horse Record</button></form></div><div class="dashPanel"><h3>🩺 Add care event</h3><form id="careForm"><div class="field"><label>Horse</label><select id="careHorse"></select></div><div class="field" style="margin-top:10px"><label>Care type</label><select id="careType"><option>Veterinary</option><option>Dental</option><option>Nutrition</option><option>Medication</option><option>Farrier</option><option>Behavior / training</option><option>Transport / intake</option><option>Other</option></select></div><div class="field" style="margin-top:10px"><label>Notes</label><textarea id="careNotes" placeholder="Care event, findings, next step…"></textarea></div><button class="btn light" type="submit" style="margin-top:10px">Add Care Record</button></form></div></div><div class="dashPanels"><div class="dashPanel"><h3>✅ Field task list</h3><form id="taskForm"><div class="field"><label>Task</label><input id="taskText" required placeholder="Arrange hay delivery"></div><button class="btn light" type="submit" style="margin-top:10px">Add Task</button></form><div class="list" id="taskList"></div></div><div class="dashPanel"><h3>💾 Data controls</h3><p style="color:#aebdb2">Export the prototype data from this browser. This does not transmit data to a server.</p><button class="btn light" id="exportData" type="button">Export JSON</button> <button class="btn" id="resetData" type="button">Reset Demo Data</button></div></div></div></section>
+<section class="dashboard" id="operations"><div class="wrap"><div class="head"><div><div class="kicker">Staff operations</div><h2>Rescue work, connected.</h2></div><p>Authorized staff use the secure live workspace below. Public visitors never receive access to private horse-care records.</p></div><div class="dashGrid"><div class="dashStat"><strong id="countHorses">0</strong><span>Local demo records</span></div><div class="dashStat"><strong id="countInterests">0</strong><span>Help requests</span></div><div class="dashStat"><strong id="countCare">0</strong><span>Care events</span></div><div class="dashStat"><strong id="countTasks">0</strong><span>Open tasks</span></div></div><div id="prototypeTools" class="dashPanels"><div class="dashPanel"><h3>⚡ Local demo workspace</h3><form id="horseForm"><div class="field"><label>Name / temporary ID</label><input id="horseName" required placeholder="Example: UT-001"></div><div class="fields" style="margin-top:10px"><div class="field"><label>Status</label><select id="horseTier"><option value="urgent">Urgent</option><option value="evaluation">Evaluation</option><option value="adoptable">Adoptable</option><option value="sanctuary">Sanctuary</option></select></div><div class="field"><label>Age / estimate</label><input id="horseAge" placeholder="Unknown"></div></div><div class="field" style="margin-top:10px"><label>Breed / type</label><input id="horseBreed" placeholder="Unknown"></div><div class="field" style="margin-top:10px"><label>Initial notes</label><textarea id="horseNotes" placeholder="Source, condition, immediate needs, transport notes…"></textarea></div><button class="btn light" type="submit" style="margin-top:10px">Add Horse Record</button></form></div><div class="dashPanel"><h3>🩺 Add care event</h3><form id="careForm"><div class="field"><label>Horse</label><select id="careHorse"></select></div><div class="field" style="margin-top:10px"><label>Care type</label><select id="careType"><option>Veterinary</option><option>Dental</option><option>Nutrition</option><option>Medication</option><option>Farrier</option><option>Behavior / training</option><option>Transport / intake</option><option>Other</option></select></div><div class="field" style="margin-top:10px"><label>Notes</label><textarea id="careNotes" placeholder="Care event, findings, next step…"></textarea></div><button class="btn light" type="submit" style="margin-top:10px">Add Care Record</button></form></div></div><div class="dashPanels"><div class="dashPanel"><h3>✅ Field task list</h3><form id="taskForm"><div class="field"><label>Task</label><input id="taskText" required placeholder="Arrange hay delivery"></div><button class="btn light" type="submit" style="margin-top:10px">Add Task</button></form><div class="list" id="taskList"></div></div><div class="dashPanel"><h3>💾 Data controls</h3><p style="color:#aebdb2">Export the prototype data from this browser. This does not transmit data to a server.</p><button class="btn light" id="exportData" type="button">Export JSON</button> <button class="btn" id="resetData" type="button">Clear Local Workspace</button></div></div></div></section>
 </main>
-<footer><div class="wrap"><strong>HORSE RESCUE</strong><p>Every horse deserves a future — adoption, rehabilitation, foster care, sponsorship or lifelong sanctuary.</p><small>Williams, Arizona · Web-first rescue platform · Built for field use.</small></div></footer>
-<nav class="mobile"><a href="#top">Home</a><a href="#horses">Horses</a><a href="#help">Help</a><a href="#contact">Contact</a><a href="#operations">Ops</a></nav>
-<div class="toast" id="toast" role="status"></div><div class="modal" id="horseModal" aria-hidden="true"><div class="modalBox"><div class="modalHead"><div><div class="kicker">Horse record</div><h2 id="modalTitle"></h2></div><button class="x" id="closeModal" aria-label="Close">×</button></div><div id="modalBody"></div></div></div>
+<footer><div class="wrap"><strong>RANCH LAND ANIMAL RESCUE</strong><p>All-animal rescue, response, rehabilitation, foster care, adoption, sponsorship, sanctuary and lifelong care.</p><small>Williams, Arizona · Web-first rescue platform · Built for field use.</small></div></footer>
+<nav class="mobile"><a href="#top">Home</a><a href="#animals">Animals</a><a href="#help">Help</a><a href="#contact">Contact</a><a href="#operations">Ops</a></nav>
+<div class="toast" id="toast" role="status"></div><div class="modal" id="horseModal" aria-hidden="true"><div class="modalBox"><div class="modalHead"><div><div class="kicker">Animal record · Equine</div><h2 id="modalTitle"></h2></div><button class="x" id="closeModal" aria-label="Close">×</button></div><div id="modalBody"></div></div></div>
 <script src="supabase-config.js"></script>
 <script>
 const KEY="horseRescuePlatform_v3";
-const DEMO=[
-{id:"demo-urgent",name:"Utah Emergency Horse",tier:"urgent",breed:"To be verified",age:"Unknown",notes:"DEMO RECORD — replace with verified rescue information.",demo:true},
-{id:"demo-eval",name:"Rehabilitation Horse",tier:"evaluation",breed:"To be verified",age:"Unknown",notes:"DEMO RECORD — rehabilitation workflow example.",demo:true},
-{id:"demo-adopt",name:"Adoption Horse",tier:"adoptable",breed:"To be verified",age:"Unknown",notes:"DEMO RECORD — adoption workflow example.",demo:true},
-{id:"demo-sanct",name:"Sanctuary Horse",tier:"sanctuary",breed:"To be verified",age:"Unknown",notes:"DEMO RECORD — sanctuary workflow example.",demo:true}
-];
-function fresh(){return{horses:structuredClone(DEMO),interests:[],care:[],tasks:[]}}
+const DEMO=[];
+function fresh(){return{horses:[],interests:[],care:[],tasks:[]}}
 function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x)return{horses:Array.isArray(x.horses)?x.horses:[],interests:Array.isArray(x.interests)?x.interests:[],care:Array.isArray(x.care)?x.care:[],tasks:Array.isArray(x.tasks)?x.tasks:[]}}catch(e){}return fresh()}
 let data=load();
 const $=id=>document.getElementById(id), uid=p=>p+"_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,7);
@@ -159,8 +154,8 @@ $("interestForm").onsubmit=e=>{e.preventDefault();const payload={name:$("name").
 $("horseForm").onsubmit=e=>{e.preventDefault();data.horses.push({id:uid("horse"),name:$("horseName").value,tier:$("horseTier").value,age:$("horseAge").value,breed:$("horseBreed").value,notes:$("horseNotes").value,demo:false});save();e.target.reset();render();toast("Horse record added.")};
 $("careForm").onsubmit=e=>{e.preventDefault();if(!data.horses.length)return;data.care.push({id:uid("care"),horseId:$("careHorse").value,type:$("careType").value,notes:$("careNotes").value,date:new Date().toISOString()});save();e.target.reset();update();toast("Care event added.")};
 $("taskForm").onsubmit=e=>{e.preventDefault();data.tasks.push({id:uid("task"),text:$("taskText").value,done:false});save();e.target.reset();update();toast("Task added.")};
-$("exportData").onclick=()=>{const blob=new Blob([JSON.stringify({...data,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="horse-rescue-backup-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href);toast("Backup exported.")};
-$("resetData").onclick=()=>{if(confirm("Reset this browser to the demo dataset? Your local prototype records will be removed.")){data=fresh();save();render();toast("Demo data restored.")}};
+$("exportData").onclick=()=>{const blob=new Blob([JSON.stringify({...data,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="ranch-land-animal-rescue-backup-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href);toast("Backup exported.")};
+$("resetData").onclick=()=>{if(confirm("Clear locally stored browser records? This only removes data saved on this device.")){data=fresh();save();render();toast("Local workspace cleared.")}};
 loadAnimalCases();
 window.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("horseModal").classList.contains("open"))$("closeModal").click()});
 if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
@@ -189,7 +184,7 @@ window.initSupabaseRescue=function(){
  function loadSDK(){return new Promise((resolve,reject)=>{if(window.supabase?.createClient)return resolve();const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';s.onload=resolve;s.onerror=reject;document.head.appendChild(s)})}
  window.addEventListener('load',async()=>{
   try{await loadSDK();const sb=window.supabase.createClient(cfg.url,cfg.publishableKey);window.rescueDB=sb;
-   const panel=document.createElement('div');panel.id='liveOps';panel.className='wrap';panel.style.marginTop='18px';panel.innerHTML='<div class="dashPanel"><div class="authbar"><span class="liveBadge">● LIVE SUPABASE</span><span id="staffState"></span><button class="btn small light" id="staffLogout" hidden>Sign out</button></div><div id="authArea"><h3>Staff access</h3><p>Authorized rescue staff can access the live operations console.</p><form id="staffLogin" class="authbox"><div class="field"><label>Email</label><input id="staffEmail" type="email" required placeholder="staff@rescue.org"></div><div class="field" style="margin-top:8px"><label>Password</label><input id="staffPassword" type="password" required></div><button class="btn light" style="margin-top:10px">Sign in</button></form></div><div id="liveArea" hidden><div class="dashGrid"><div class="dashStat"><strong id="liveHorses">0</strong><span>Live horses</span></div><div class="dashStat"><strong id="liveTasks">0</strong><span>Open tasks</span></div><div class="dashStat"><strong id="liveCare">0</strong><span>Care events</span></div><div class="dashStat"><strong id="liveTransport">0</strong><span>Transport cases</span></div></div><div class="liveOpsPanel"><h3>Live horses</h3><div style="overflow:auto"><table class="liveTable"><thead><tr><th>Name</th><th>Status</th><th>Priority</th><th>Location</th></tr></thead><tbody id="liveHorseRows"></tbody></table></div></div></div></div>';
+   const panel=document.createElement('div');panel.id='liveOps';panel.className='wrap';panel.style.marginTop='18px';panel.innerHTML='<div class="dashPanel"><div class="authbar"><span class="liveBadge">● LIVE SUPABASE</span><span id="staffState"></span><button class="btn small light" id="staffLogout" hidden>Sign out</button></div><div id="authArea"><h3>Staff access</h3><p>Authorized rescue staff can access the live operations console.</p><form id="staffLogin" class="authbox"><div class="field"><label>Email</label><input id="staffEmail" type="email" required placeholder="staff@rescue.org"></div><div class="field" style="margin-top:8px"><label>Password</label><input id="staffPassword" type="password" required></div><button class="btn light" style="margin-top:10px">Sign in</button></form></div><div id="liveArea" hidden><div class="dashGrid"><div class="dashStat"><strong id="liveHorses">0</strong><span>Live equine records</span></div><div class="dashStat"><strong id="liveTasks">0</strong><span>Open tasks</span></div><div class="dashStat"><strong id="liveCare">0</strong><span>Care events</span></div><div class="dashStat"><strong id="liveTransport">0</strong><span>Transport cases</span></div></div><div class="liveOpsPanel"><h3>Live equine records</h3><div style="overflow:auto"><table class="liveTable"><thead><tr><th>Name</th><th>Status</th><th>Priority</th><th>Location</th></tr></thead><tbody id="liveHorseRows"></tbody></table></div></div></div></div>';
    document.querySelector('#operations .wrap').appendChild(panel);
    const authArea=panel.querySelector('#authArea'),liveArea=panel.querySelector('#liveArea'),state=panel.querySelector('#staffState'),logout=panel.querySelector('#staffLogout');
    async function refresh(){
@@ -363,46 +358,107 @@ async function refreshImpact(){
 }
 async function bootAuth(){
  const sb=window.rescueDB;if(!sb)return;
- const set=(msg,on)=>{$("#staffAuthMsg").textContent=msg;$("#staffDot").classList.toggle("on",!!on);};
- const ensureFounder=async(user)=>{
-   if(!user?.email||user.email.toLowerCase()!=="way_out4@yahoo.com")return null;
-   const r=await sb.rpc("ensure_tucker_founder");
-   if(r.error)throw r.error;
-   return r.data;
+ const $id=id=>document.getElementById(id);
+ const set=(msg,on)=>{$id("staffAuthMsg").textContent=msg;$id("staffDot").classList.toggle("on",!!on)};
+ const friendly=(err,mode)=>{
+   const m=String(err?.message||err||"").toLowerCase();
+   if(m.includes("invalid login credentials")||m.includes("invalid credentials"))return "Email or password is incorrect. Check both and try again.";
+   if(m.includes("email not confirmed")||m.includes("email confirmation"))return "Your account was created. Please confirm your email, then return here to sign in.";
+   if(m.includes("user already registered")||m.includes("already registered"))return "That email already has an account. Use Sign in or reset the password.";
+   if(m.includes("password"))return mode==="create"?"Choose a password with at least 8 characters.":"Check your password and try again.";
+   if(m.includes("email"))return "Enter a valid email address and try again.";
+   if(m.includes("rate limit")||m.includes("too many"))return "Please wait a moment before trying again.";
+   if(m.includes("network")||m.includes("fetch")||m.includes("failed to fetch"))return "Connection is temporarily unavailable. Your information was not lost. Please try again.";
+   return mode==="create"?"We couldn't finish account creation yet. Please try again.":"We couldn't complete sign-in yet. Please try again.";
  };
- const sync=async(session)=>{
+ const setBusy=(busy,mode)=>{
+   const sign=$id("staffSignIn"),create=$id("staffCreate"),forgot=$id("staffForgot");
+   if(sign){sign.disabled=busy;sign.textContent=busy?(mode==="create"?"Creating account…":"Signing in…"):"Sign in"}
+   if(create)create.disabled=busy;if(forgot)forgot.disabled=busy;
+ };
+ const ensureFounder=async user=>{
+   if(!user?.email||user.email.toLowerCase()!=="way_out4@yahoo.com")return;
+   const r=await sb.rpc("ensure_tucker_founder");if(r.error)throw r.error;
+ };
+ const sync=async session=>{
    const user=session?.user;
-   if(!user){set("Not signed in.",false);$("#staffSignOut").style.display="none";$("#staffCreate").style.display="inline-flex";return}
-   try{
-     await ensureFounder(user);
-   }catch(e){
-     console.warn("Founder provisioning:",e.message);
-   }
+   if(!user){set("Use any valid email address. Your account is created securely by the rescue system.",false);$id("staffSignOut").style.display="none";$id("staffCreate").style.display="inline-flex";$id("capacityJoin").style.display="none";return}
+   try{await ensureFounder(user)}catch(e){console.warn("Founder provisioning deferred:",e?.message||e)}
    const {data:p,error}=await sb.from("staff_profiles").select("display_name,role,active").eq("user_id",user.id).maybeSingle();
-   if(error){set("Account signed in, but staff access could not be loaded. Please refresh.",false);return}
+   if(error){set("Your account is signed in. Rescue capacity details will load when available.",false);return}
    if(p?.active){
-     const label=p.role==="founder"?"Founder · Designer":(p.display_name||user.email)+" · "+p.role;
      set("Signed in as "+(p.display_name||user.email)+" · "+(p.role==="founder"?"Founder / Designer":p.role),true);
-     $("#staffSignOut").style.display="inline-flex";$("#staffCreate").style.display="none";$("#staffPassword").value="";
+     $id("staffSignOut").style.display="inline-flex";$id("staffCreate").style.display="none";$id("staffPassword").value="";$id("staffPasswordConfirm").value="";$id("staffPasswordConfirmWrap").style.display="none";
      return;
    }
-   set("Account signed in. No rescue capacity is attached yet.",false);
+   set("Account active. Choose a rescue capacity below to request participation.",true);
+   $id("staffSignOut").style.display="inline-flex";$id("staffCreate").style.display="none";$id("staffPassword").value="";$id("staffPasswordConfirm").value="";
  };
- $("#staffAuthForm")?.addEventListener("submit",async e=>{e.preventDefault();set("Signing in…",false);const r=await sb.auth.signInWithPassword({email:$("#staffEmail").value.trim(),password:$("#staffPassword").value});if(r.error){set(r.error.message,false);return}await sync(r.data.session);toast2("Signed in.");});
- $("#staffCreate")?.addEventListener("click",async()=>{set("Creating account…",false);const r=await sb.auth.signUp({email:$("#staffEmail").value.trim(),password:$("#staffPassword").value});if(r.error){set(r.error.message,false);return}if(!r.data.session){set("Account created. Check your email to verify it, then sign in.",false)}else await sync(r.data.session)});
- $("#staffForgot")?.addEventListener("click",async()=>{const email=$("#staffEmail").value.trim();if(!email){set("Enter your email first.",false);return}const r=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});set(r.error?r.error.message:"Password-reset email sent.",!r.error)});
- $("#staffSignOut")?.addEventListener("click",async()=>{await sb.auth.signOut();set("Signed out.",false);$("#staffSignOut").style.display="none";$("#staffCreate").style.display="inline-flex"});
- const {data:{session}}=await sb.auth.getSession();await sync(session);
- sb.auth.onAuthStateChange(async(_e,s)=>{await sync(s)});
+ $id("staffCreate")?.addEventListener("click",()=>{
+   $id("staffPasswordConfirmWrap").style.display="block";
+   $id("staffPassword").setAttribute("autocomplete","new-password");
+   $id("staffPasswordConfirm").focus();
+   set("Enter your password twice, then tap Create account. Any valid email address is supported.",false);
+ });
+ $id("staffAuthForm")?.addEventListener("submit",async e=>{
+   e.preventDefault();
+   const email=$id("staffEmail").value.trim().toLowerCase(),password=$id("staffPassword").value;
+   if(!email||!/^\S+@\S+\.\S+$/.test(email)){set("Enter a valid email address.",false);$id("staffEmail").focus();return}
+   if(password.length<8){set("Password must contain at least 8 characters.",false);$id("staffPassword").focus();return}
+   const creating=$id("staffPasswordConfirmWrap").style.display!=="none";
+   if(creating&&password!==$id("staffPasswordConfirm").value){set("Passwords do not match.",false);$id("staffPasswordConfirm").focus();return}
+   setBusy(true,creating?"create":"sign");
+   try{
+     if(creating){
+       const r=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.href}});
+       if(r.error){set(friendly(r.error,"create"),false);return}
+       if(!r.data.session){
+         set("Account created successfully. Check your email to confirm the account, then return here and sign in.",true);
+         $id("staffPasswordConfirmWrap").style.display="none";
+         return;
+       }
+       await sync(r.data.session);toast2("Account created and signed in.");
+     }else{
+       const r=await sb.auth.signInWithPassword({email,password});
+       if(r.error){set(friendly(r.error,"sign"),false);return}
+       await sync(r.data.session);toast2("Signed in successfully.");
+     }
+   }catch(err){set(friendly(err,creating?"create":"sign"),false)}
+   finally{setBusy(false,creating?"create":"sign")}
+ });
+ $id("staffForgot")?.addEventListener("click",async()=>{
+   const email=$id("staffEmail").value.trim().toLowerCase();
+   if(!/^\S+@\S+\.\S+$/.test(email)){set("Enter the account email first.",false);$id("staffEmail").focus();return}
+   try{const r=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.href});set(r.error?friendly(r.error,"reset"):"If an account exists for that email, password-reset instructions are on the way.",!r.error)}
+   catch(e){set("Password reset is temporarily unavailable. Please try again.",false)}
+ });
+ $id("staffSignOut")?.addEventListener("click",async()=>{try{await sb.auth.signOut()}catch(e){}set("Signed out safely.",false);$id("staffSignOut").style.display="none";$id("staffCreate").style.display="inline-flex"});
+ try{const {data:{session}}=await sb.auth.getSession();await sync(session)}catch(e){set("Your account session will refresh automatically. Please try again.",false)}
+ sb.auth.onAuthStateChange(async(_e,s)=>{try{await sync(s)}catch(e){console.warn("Auth refresh:",e)}});
  refreshImpact();
 }
 window.addEventListener("load",()=>setTimeout(()=>{bootAuth();},1800));
 })();
-</script><script>window.addEventListener("load",()=>{document.querySelectorAll("body *").forEach(el=>{if(el.textContent==="Demo")el.textContent=""})});</script><script id="rlar-v3">
-window.addEventListener("load",()=>{
- const cards=[...document.querySelectorAll("article.card")];
- cards.forEach(card=>{if(/demo records?/i.test(card.textContent)){card.querySelectorAll("*").forEach(x=>{if(/demo records?/i.test(x.textContent)&&x.children.length===0)x.textContent="";});}});
-});
 </script><script id="capacity-onboarding">
 (()=>{const $=id=>document.getElementById(id);async function ensureFounder(){try{if(!window.rescueDB)return;const {data:{user}}=await rescueDB.auth.getUser();if(user&&user.email&&user.email.toLowerCase()==="way_out4@yahoo.com"){await rescueDB.rpc("ensure_tucker_founder");}}catch(e){console.warn("Founder provisioning:",e.message)}}async function refresh(){if(!window.rescueDB)return;const {data:{user}}=await rescueDB.auth.getUser();const box=$("capacityJoin");if(!box)return;if(!user){box.style.display="none";return}box.style.display="block";const {data}=await rescueDB.from("role_requests").select("requested_role,status").eq("user_id",user.id).order("created_at",{ascending:false});if(data?.length){$("capacityMsg").textContent="Requests: "+data.map(x=>x.requested_role+" ("+x.status+")").join(" · ")}}document.addEventListener("click",async e=>{if(e.target.id!=="capacitySubmit")return;const {data:{user}}=await rescueDB.auth.getUser();if(!user){$("capacityMsg").textContent="Sign in first.";return}const role=$("capacityRole").value;const {error}=await rescueDB.rpc("request_rescue_capacity",{p_role:role,p_display_name:$("capacityName").value||null,p_credentials:$("capacityCredentials").value||null,p_service_area:$("capacityArea").value||null,p_notes:$("capacityNotes").value||null});$("capacityMsg").textContent=error?error.message:"Request submitted. A rescue administrator will review it.";if(!error)refresh()});document.addEventListener("click",e=>{if(e.target.closest("#platformSignIn")||e.target.closest("#openStaff"))setTimeout(refresh,300)});window.addEventListener("load",async()=>{await ensureFounder();await refresh();if(window.rescueDB)window.rescueDB.auth.onAuthStateChange(async()=>{await ensureFounder();await refresh()})})})();
+</script><script id="frontend-safety">
+(function(){
+"use strict";
+function safeMessage(){
+ return "That action could not be completed right now. Your information was not lost. Please try again.";
+}
+window.addEventListener("error",function(e){
+ try{console.warn("Frontend error:",e.error||e.message);if(typeof toast2==="function")toast2(safeMessage());}catch(_){}
+});
+window.addEventListener("unhandledrejection",function(e){
+ try{e.preventDefault();console.warn("Unhandled frontend rejection:",e.reason);if(typeof toast2==="function")toast2(safeMessage());}catch(_){}
+});
+document.addEventListener("submit",function(e){
+ const f=e.target;if(!(f instanceof HTMLFormElement))return;
+ const required=[...f.querySelectorAll("[required]")];
+ for(const el of required){
+   if(!String(el.value||"").trim()){e.preventDefault();el.focus();if(typeof toast2==="function")toast2("Please complete the required fields.");return}
+ }
+});
+})();
 </script></body></html>
