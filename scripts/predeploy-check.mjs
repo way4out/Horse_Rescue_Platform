@@ -31,9 +31,9 @@ assert.match(config,/window\.SUPABASE_CONFIG\s*=\s*\{/);
 assert.match(html,/sb\.auth\.signUp\(/);
 assert.match(html,/sb\.auth\.signInWithPassword\(/);
 assert.match(html,/ensure_tucker_founder/);
-assert.match(html,/request_rescue_capacity/);
+assert.match(html,/request_rescue_capacity/);\nassert.match(html,/version:"pass-3"/);\nfor(const marker of ["Emergency / Animal Response","Rehome / Surrender Assistance","Foster / Adoption Interest","Sponsorship / Direct Support","Transport / Field Response","Volunteer / Professional / Partner Capacity"]) assert.match(html,new RegExp(marker.replace(/[.*+?^${}()|[\\]\\]/g,"\\assert.match(html,/request_rescue_capacity/);")));\nassert.match(html,/publicContactRouting:false/);\nassert.doesNotMatch(html,/DIRECT CONTACT|Reach Tucker directly|way_out4@yahoo\.com|623[) -]?764[ -]?5641|4out_og/);
 assert.doesNotMatch(html,/Local demo workspace|horseRescuePlatform_v3|designer-access/);
 
 const sw=fs.readFileSync("sw.js","utf8");
-assert.match(sw,/url\.origin!==self\.location\.origin/);
+assert.match(sw,/url\.origin!==self\.location\.origin/);\nassert.match(sw,/const CACHE="rlar-v4"/);
 console.log(`Predeploy checks passed: ${scripts.length} inline scripts, ${ids.length} HTML IDs, required assets present.`);
