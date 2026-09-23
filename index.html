@@ -259,7 +259,7 @@ document.getElementById("interestForm")?.addEventListener("submit",async e=>{
    btn.disabled=false;btn.textContent="Submit request";
  });
 })();
-\nif("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 window.addEventListener("load",()=>setTimeout(loadAnimalCases,1200));
 window.addEventListener("rescue:auth-ready",loadAnimalCases);
 })();
