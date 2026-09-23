@@ -26,7 +26,8 @@ while(true){
 }
 for(let i=0;i<scripts.length;i++) new Function(scripts[i]);
 
-assert.match(html,/window\.SUPABASE_CONFIG\s*=\s*\{/);
+const config=fs.readFileSync("supabase-config.js","utf8");
+assert.match(config,/window\.SUPABASE_CONFIG\s*=\s*\{/);
 assert.match(html,/sb\.auth\.signUp\(/);
 assert.match(html,/sb\.auth\.signInWithPassword\(/);
 assert.match(html,/ensure_tucker_founder/);
